@@ -4,18 +4,18 @@ from deap import base, creator, tools
 
 class GA:
     def __init__(self, population_size, iterations, n_matings, cities, path):
-        self.population = population_size
-        self.iterations = iterations
-        self.matings = n_matings
-        self.cities = cities
-        self.greedy = path
+        self.population = population_size # size of population
+        self.iterations = iterations # number of interactions
+        self.matings = n_matings # quantity of matings to be realize
+        self.cities = cities #matrix of instance distance between cities
+        self.greedy = path # gready path
        
         self.initConfig()
 
     def initConfig(self):
         #Min
-        creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-        creator.create("Individual", list, fitness=creator.FitnessMin)
+        creator.create("FitnessMin", base.Fitness, weights=(-1.0,)) # set min fitness
+        creator.create("Individual", list, fitness=creator.FitnessMin) #create a list of individuals
 
         self.toolbox = base.Toolbox()
 
@@ -68,7 +68,7 @@ class GA:
         return distances
         
     def run(self):
-        population = self.toolbox.population(n=self.population)
+        population = self.toolbox.population(n=self.population) # generate a population
        
         greedy = creator.Individual(self.greedy)    
         for i in range(0, 2):
@@ -86,7 +86,7 @@ class GA:
             #reset fitness
             self.fitness(current_population)
 
-            population[:] = self.toolbox.select(current_population, len(population))
+            population[:] = self.toolbox.select(current_population, len(population)) # get the bests N of all population and remove others
             stats.append(GA.pull_stats(population, iteration))
         
         return stats, population

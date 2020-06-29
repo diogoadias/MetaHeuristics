@@ -1,10 +1,13 @@
+import sys
+sys.path.append(".")
+
 from Util.TSPReader import TSPReader
-from Util import PlotterResults
 from Genetic.GA import GA
 from Greedy.Greedy import Greedy
 import collections
 import time
 
+#Verify in there is a repeated city(DEBUG ONLY)
 def validateTSP(path):
     return [item for item, count in collections.Counter(path).items() if count > 1]
 
@@ -29,5 +32,3 @@ print("TIME SPEND:", (end - start))
 
 print(stats[len(stats)-1])
 print(population[len(population)-1])
-
-PlotterResults.generatePlot(stats)

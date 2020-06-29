@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from Bet.Player import Player
 from Bet.House import House
 
