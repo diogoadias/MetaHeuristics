@@ -76,7 +76,7 @@ class GA:
 
         self.fitness(population)
 
-        stats = []
+        stats = []''
         for iteration in list(range(1, self.iterations)):
             current_population = list(map(self.toolbox.clone, population))
             offspring = list(self.offspring(current_population))
