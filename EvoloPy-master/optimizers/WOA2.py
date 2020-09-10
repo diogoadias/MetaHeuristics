@@ -13,13 +13,13 @@ import time
 
 
 
-def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def WOA2(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
-    # #dim=30
-    # #SearchAgents_no=50
-    # #lb=-100
-    # #ub=100
-    # #Max_iter=500
+    #dim=30
+    #SearchAgents_no=50
+    #lb=-100
+    #ub=100
+    #Max_iter=500
     if not isinstance(lb, list):
         lb = [lb] * dim
     if not isinstance(ub, list):
@@ -31,11 +31,11 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     Leader_score=float("inf")  #change this to -inf for maximization problems
         
         
-    # #Initialize the positions of search agents
+    #Initialize the positions of search agents
     Positions = numpy.zeros((SearchAgents_no, dim))
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
-  
+   
 
     #Initialize convergence
     convergence_curve=numpy.zeros(Max_iter)
@@ -44,7 +44,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     ############################
     s=solution()
 
-    print("WOA is optimizing  \""+objf.__name__+"\"")    
+    print("WOA2 is optimizing  \""+objf.__name__+"\"")    
 
     timerStart=time.time() 
     s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -70,13 +70,23 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                 Leader_score=fitness; # Update alpha
                 Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
        
+            
+        # a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
+        
+        # Change a parameter
+        a_initial = 0.2
+        a_final = 0.9
+        # if t < Max_iter:
+        #     a_final = 2-(t+1)*((2)/Max_iter)
+        # else: 
+        #     a_final = a_initial   
 
-        a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
+
+        a=(a_initial-a_final)*(math.exp(-5*(t/Max_iter)) + math.cos((math.pi/3)*(t/Max_iter)))
             
         # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
         a2=-1+t*((-1)/Max_iter);
-        #a2 = -1
-            
+                    
         # Update the Position of search agents 
         for i in range(0,SearchAgents_no):
             r1=random.random() # r1 is a random number in [0,1]
@@ -120,7 +130,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
     s.convergence=convergence_curve
-    s.optimizer="WOA"   
+    s.optimizer="WOA2"   
     s.objfname=objf.__name__
     s.best = Leader_score
     s.bestIndividual = Leader_pos

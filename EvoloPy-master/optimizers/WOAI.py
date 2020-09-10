@@ -13,13 +13,13 @@ import time
 
 
 
-def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def WOAI(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
-    # #dim=30
-    # #SearchAgents_no=50
-    # #lb=-100
-    # #ub=100
-    # #Max_iter=500
+    #dim=30
+    #SearchAgents_no=50
+    #lb=-100
+    #ub=100
+    #Max_iter=500
     if not isinstance(lb, list):
         lb = [lb] * dim
     if not isinstance(ub, list):
@@ -31,11 +31,11 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     Leader_score=float("inf")  #change this to -inf for maximization problems
         
         
-    # #Initialize the positions of search agents
+    #Initialize the positions of search agents
     Positions = numpy.zeros((SearchAgents_no, dim))
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
-  
+    
 
     #Initialize convergence
     convergence_curve=numpy.zeros(Max_iter)
@@ -44,7 +44,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     ############################
     s=solution()
 
-    print("WOA is optimizing  \""+objf.__name__+"\"")    
+    print("WOAI is optimizing  \""+objf.__name__+"\"")    
 
     timerStart=time.time() 
     s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -70,13 +70,16 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                 Leader_score=fitness; # Update alpha
                 Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
        
-
+        # Inertia weight
+        w_final=0.9
+        w_initial=0.2
+        w = w_initial - (w_initial - w_final)*(t/Max_iter) # introduced by Shi and Eberhart[12] who introduce a Linear Decreasing Inertia Weight(LDIW) strategy in 1998    
+        
         a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
-            
+                   
         # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
         a2=-1+t*((-1)/Max_iter);
-        #a2 = -1
-            
+                    
         # Update the Position of search agents 
         for i in range(0,SearchAgents_no):
             r1=random.random() # r1 is a random number in [0,1]
@@ -101,14 +104,14 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                             
                     elif abs(A)<1:
                         D_Leader=abs(C*Leader_pos[j]-Positions[i,j]) 
-                        Positions[i,j]=Leader_pos[j]-A*D_Leader      
+                        Positions[i,j]=w*Leader_pos[j]-A*D_Leader     
                         
                         
                 elif p>=0.5:
                     
                     distance2Leader=abs(Leader_pos[j]-Positions[i,j])
                     # Eq. (2.5)
-                    Positions[i,j]=distance2Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]
+                    Positions[i,j]=distance2Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
                       
             
         convergence_curve[t]=Leader_score
@@ -120,7 +123,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
     s.convergence=convergence_curve
-    s.optimizer="WOA"   
+    s.optimizer="WOAI"   
     s.objfname=objf.__name__
     s.best = Leader_score
     s.bestIndividual = Leader_pos

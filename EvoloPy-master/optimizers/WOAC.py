@@ -13,13 +13,13 @@ import time
 
 
 
-def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def WOAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
-    # #dim=30
-    # #SearchAgents_no=50
-    # #lb=-100
-    # #ub=100
-    # #Max_iter=500
+    #dim=30
+    #SearchAgents_no=50
+    #lb=-100
+    #ub=100
+    #Max_iter=500
     if not isinstance(lb, list):
         lb = [lb] * dim
     if not isinstance(ub, list):
@@ -31,11 +31,11 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     Leader_score=float("inf")  #change this to -inf for maximization problems
         
         
-    # #Initialize the positions of search agents
+    #Initialize the positions of search agents
     Positions = numpy.zeros((SearchAgents_no, dim))
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
-  
+    
 
     #Initialize convergence
     convergence_curve=numpy.zeros(Max_iter)
@@ -44,7 +44,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     ############################
     s=solution()
 
-    print("WOA is optimizing  \""+objf.__name__+"\"")    
+    print("WOAC is optimizing  \""+objf.__name__+"\"")    
 
     timerStart=time.time() 
     s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -70,6 +70,11 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                 Leader_score=fitness; # Update alpha
                 Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
        
+        # Tent Chaotic Map
+        if(Positions[i,j] < 0.7):
+            Positions[i,j] = Positions[i,j] / 0.7
+        else:
+            Positions[i,j] = (10/3)*(1-Positions[i,j])
 
         a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
             
@@ -120,7 +125,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
     s.convergence=convergence_curve
-    s.optimizer="WOA"   
+    s.optimizer="WOAC"   
     s.objfname=objf.__name__
     s.best = Leader_score
     s.bestIndividual = Leader_pos

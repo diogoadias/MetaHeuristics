@@ -20,3 +20,5 @@ class solution:
         self.dim=0
         self.popnum=0
         self.maxiers=0
+        self.mean=0
+        self.std=0

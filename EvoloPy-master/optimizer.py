@@ -12,6 +12,10 @@ import optimizers.MFO as mfo
 import optimizers.CS as cs
 import optimizers.BAT as bat
 import optimizers.WOA as woa
+import optimizers.WOA2 as woa2
+import optimizers.WOAI as woai
+import optimizers.WOAAC as woaac
+import optimizers.WOAC as woac
 import optimizers.FFA as ffa
 import optimizers.SSA as ssa
 import optimizers.GA as ga
@@ -30,12 +34,14 @@ import plot_boxplot as box_plot
 
 warnings.simplefilter(action='ignore')
 
+
 def selector(algo,func_details,popSize,Iter):
     function_name=func_details[0]
     lb=func_details[1]
     ub=func_details[2]
     dim=func_details[3]
     
+
     if(algo=="SSA"):
         x=ssa.SSA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
     elif(algo=="PSO"):
@@ -49,7 +55,15 @@ def selector(algo,func_details,popSize,Iter):
     elif(algo=="GWO"):
         x=gwo.GWO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
     elif(algo=="WOA"):
-        x=woa.WOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
+        x=woa.WOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOA2"):
+        x=woa2.WOA2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOAI"):
+        x=woai.WOAI(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOAAC"):
+        x=woaac.WOAAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOAC"):
+        x=woac.WOAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)         
     elif(algo=="MVO"):
         x=mvo.MVO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
     elif(algo=="MFO"):
@@ -101,7 +115,7 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
     # Select general parameters for all optimizers (population size, number of iterations) ....
     PopulationSize = params['PopulationSize']
     Iterations= params['Iterations']
-
+   
     #Export results ?
     Export=export_flags['Export_avg']
     Export_details=export_flags['Export_details']
@@ -136,11 +150,11 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
                     with open(ExportToFile, 'a',newline='\n') as out:
                         writer = csv.writer(out,delimiter=',')
                         if (Flag_details==False): # just one time to write the header of the CSV file
-                            header= numpy.concatenate([["Optimizer","objfname","ExecutionTime"],CnvgHeader])
+                            header= numpy.concatenate([["Optimizer","objfname","ExecutionTime", "Mean", "STD"],CnvgHeader])
                             writer.writerow(header)
                             Flag_details=True # at least one experiment
                         executionTime[k] = x.executionTime
-                        a=numpy.concatenate([[x.optimizer,x.objfname,x.executionTime],x.convergence])
+                        a=numpy.concatenate([[x.optimizer,x.objfname,x.executionTime, x.mean, x.std],x.convergence])
                         writer.writerow(a)
                     out.close()
                     
