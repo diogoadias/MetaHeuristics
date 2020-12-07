@@ -73,17 +73,9 @@ def WOA2(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             
         # a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
         
-        # Change a parameter
-        a_initial = 0.2
-        a_final = 0.9
-        # if t < Max_iter:
-        #     a_final = 2-(t+1)*((2)/Max_iter)
-        # else: 
-        #     a_final = a_initial   
-
-
-        a=(a_initial-a_final)*(math.exp(-5*(t/Max_iter)) + math.cos((math.pi/3)*(t/Max_iter)))
-            
+        
+        a = 2+2*math.cos(math.pi/2*(1+t/Max_iter)) # a decreases non-linearly
+                   
         # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
         a2=-1+t*((-1)/Max_iter);
                     

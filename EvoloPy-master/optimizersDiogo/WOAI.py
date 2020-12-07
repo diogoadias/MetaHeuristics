@@ -99,11 +99,11 @@ def WOAI(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     if abs(A)>=1:
                         rand_leader_index = math.floor(SearchAgents_no*random.random());
                         X_rand = Positions[rand_leader_index, :]
-                        D_X_rand=abs(C*X_rand[j]-Positions[i,j]) 
-                        Positions[i,j]=X_rand[j]-A*D_X_rand      
+                        D_X_rand=abs(w*C*X_rand[j]-Positions[i,j]) 
+                        Positions[i,j]=w*X_rand[j]-A*D_X_rand      
                             
                     elif abs(A)<1:
-                        D_Leader=abs(C*Leader_pos[j]-Positions[i,j]) 
+                        D_Leader=abs(C*w*Leader_pos[j]-Positions[i,j]) 
                         Positions[i,j]=w*Leader_pos[j]-A*D_Leader     
                         
                         

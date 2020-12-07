@@ -12,10 +12,13 @@ import optimizers.MFO as mfo
 import optimizers.CS as cs
 import optimizers.BAT as bat
 import optimizers.WOA as woa
-import optimizers.WOA2 as woa2
-import optimizers.WOAI as woai
-import optimizers.WOAAC as woaac
-import optimizers.WOAC as woac
+import optimizersDiogo.WOA2 as woa2
+import optimizersDiogo.WOA3 as woa3
+import optimizersDiogo.WOAI as woai
+import optimizersDiogo.WOAI2 as woai2
+import optimizersDiogo.WOAI3 as woai3
+import optimizersDiogo.WOAAC as woaac
+import optimizersDiogo.WOAC as woac
 import optimizers.FFA as ffa
 import optimizers.SSA as ssa
 import optimizers.GA as ga
@@ -23,6 +26,7 @@ import optimizers.HHO as hho
 import optimizers.SCA as sca
 import optimizers.JAYA as jaya
 import optimizers.DE as de
+import optimizersDiogo.NatureChainAlgorithm as nca
 import benchmarks
 import csv
 import numpy
@@ -58,8 +62,14 @@ def selector(algo,func_details,popSize,Iter):
         x=woa.WOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOA2"):
         x=woa2.WOA2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOA3"):
+        x=woa3.WOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
     elif(algo=="WOAI"):
         x=woai.WOAI(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOAI2"):
+        x=woai2.WOAI2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOAI3"):
+        x=woai3.WOAI3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAAC"):
         x=woaac.WOAAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAC"):
@@ -78,6 +88,8 @@ def selector(algo,func_details,popSize,Iter):
         x=jaya.JAYA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="DE"):
         x=de.DE(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="NCA"):
+        x=nca.NCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)      
     else:
         return null;
     return x
