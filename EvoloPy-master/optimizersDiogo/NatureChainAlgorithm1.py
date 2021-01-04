@@ -4,7 +4,7 @@ Created on Mon Dec 21 22:00: 2020
 
 @author: diogo
 
-NCA with random choice and random probabilities
+NCA with random choice 
 """
 import random
 import numpy
@@ -94,13 +94,10 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     # Main loop
     while t<=Max_iter-1:
         
-        algorithm = ["PSO", "GWO", "WOA", "IWOA"]     
+        algorithm = ["PSO", "GWO", "WOA", "IWOA"]
         
         while len(algorithm) > 0:
-            prob = numpy.random.random_sample(len(algorithm))
-            prob /= prob.sum() # normalize distribution           
-
-            choice = numpy.random.choice(algorithm,p=prob)
+            choice = random.choice(algorithm)
             
             #PSO
             if(choice == "PSO" and t < Max_iter):
@@ -108,9 +105,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     gBestScore = best_all
                     gBest = best_position        
                 best_all, best_position, Positions = pso(objf, t, Max_iter, SearchAgents_no, dim, Positions, lb, ub, Vmax, wMax, wMin, c1, c2, vel, pBest, gBest, pBestScore, gBestScore)            
-                index = algorithm.index("PSO")
-                algorithm.remove("PSO")               
-                prob = numpy.delete(prob, index)
+                algorithm.remove("PSO")
                 convergence_curve[t]=best_all
                 t=t+1                     
             
@@ -120,9 +115,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     Alpha_score = best_all
                     Alpha_pos = best_position            
                 best_all, best_position, Positions = gwo(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Alpha_pos, Beta_pos, Delta_pos, Alpha_score,  Beta_score,  Delta_score)               
-                index = algorithm.index("GWO")
-                algorithm.remove("GWO")                
-                prob = numpy.delete(prob, index)
+                algorithm.remove("GWO")
                 convergence_curve[t]=best_all
                 t=t+1                     
             
@@ -132,9 +125,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     Leader_score = best_all
                     Leader_pos = best_position   
                 best_all, best_position, Positions = woa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)
-                index = algorithm.index("WOA")
                 algorithm.remove("WOA")
-                prob = numpy.delete(prob, index)
                 convergence_curve[t]=best_all
                 t=t+1               
 
@@ -144,9 +135,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     Leader_score = best_all
                     Leader_pos = best_position   
                 best_all, best_position, Positions = iwoa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-                index = algorithm.index("IWOA")
-                algorithm.remove("IWOA")                
-                prob = numpy.delete(prob, index)
+                algorithm.remove("IWOA")
                 convergence_curve[t]=best_all 
                 t=t+1 
 

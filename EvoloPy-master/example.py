@@ -15,14 +15,14 @@ optimizer=["NCA", "WOA", "GWO", "PSO", "WOAI"]
 
 # Select benchmark function"
 # "F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18","F19"
-objectivefunc=["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18","F19"] 
+objectivefunc=["F1","F2","F3","F4","F5","F6","F7","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18"] 
 
 # Select number of repetitions for each experiment. 
 # To obtain meaningful statistical results, usually 30 independent runs are executed for each algorithm.
 NumOfRuns=30
 
 # Select general parameters for all optimizers (population size, number of iterations) ....
-params = {'PopulationSize' : 30, 'Iterations' : 50}
+params = {'PopulationSize' : 30, 'Iterations' : 500}
 
 #Choose whether to Export the results in different formats
 export_flags = {'Export_avg':True, 'Export_details':True, 
