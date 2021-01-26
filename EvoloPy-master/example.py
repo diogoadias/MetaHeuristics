@@ -11,15 +11,15 @@ import numpy
 # Select optimizers
 # "SSA","PSO","GA","BAT","FFA","GWO","WOA","MVO","MFO","CS","HHO","SCA","JAYA","DE"
 #optimizer=["SSA","PSO","GWO"]
-optimizer=["NCA", "WOA", "GWO", "PSO", "WOAI"]
+optimizer=["WOAAC", "WOA"]
 
 # Select benchmark function"
 # "F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18","F19"
-objectivefunc=["F1","F2","F3","F4","F5","F6","F7","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18"] 
+objectivefunc=["F7"] 
 
 # Select number of repetitions for each experiment. 
 # To obtain meaningful statistical results, usually 30 independent runs are executed for each algorithm.
-NumOfRuns=30
+NumOfRuns=10
 
 # Select general parameters for all optimizers (population size, number of iterations) ....
 params = {'PopulationSize' : 30, 'Iterations' : 500}

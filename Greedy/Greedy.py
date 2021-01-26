@@ -21,13 +21,13 @@ class Greedy:
             self.path.append(self.initial_city)
                
         for i in range(0, len(self.cities)-1):        
-            city_lenght = min(k for k in self.cities[i] if k > 0)
-            index = self.cities[i].index(city_lenght)       
+            city_lenght = min(k for k in self.cities[self.initial_city] if k > 0)
+            index = self.cities[self.initial_city].index(city_lenght)       
             if index in self.path:
                 while index in self.path:
-                    self.cities[i][index] = 0
-                    city_lenght = min(k for k in self.cities[i] if k > 0)
-                    index = self.cities[i].index(city_lenght)
+                    self.cities[self.initial_city][index] = 0
+                    city_lenght = min(k for k in self.cities[self.initial_city] if k > 0)
+                    index = self.cities[self.initial_city].index(city_lenght)
             
             self.total_lenght += city_lenght
             self.path.append(index)

@@ -9,12 +9,21 @@ start = time.time()
 
 cities = TSPReader.read_tsplib("Util/berlin52.xml")
 
-gready = Greedy(cities)
-path, total, stats = gready.run()
+best = float("inf")
+best_path = None
 
+for i in range(0, len(cities)):
+    gready = Greedy(cities, i)
+    path, total, stats = gready.run()
 
-print("DISTANCE:", total)
-print(path)
+    if best > total:
+        best = total
+        best_path = path
+    
+    print("At interaction {} the best value is: {}", i, best)
+
+print("DISTANCE:", best)
+print(best_path)
 
 end = time.time()
 

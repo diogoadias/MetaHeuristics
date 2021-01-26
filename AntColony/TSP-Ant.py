@@ -9,11 +9,11 @@ import time
 
 start = time.time()
 
-cities = TSPReader.read_tsplib("Util/a280.xml") # get distances for all cities
+cities = TSPReader.read_tsplib("Util/berlin52.xml") # get distances for all cities
 c = np.asarray(cities) # transform in numpy array
 
 # distances, n_ants, n_best, n_iterations, evaporation
-ant = AntColony(c, 10, 1, 100, 0.1) # R: 9705.55 T: 73.23 seg
+ant = AntColony(c, 10, 2, 500, 0.1) # R: 9705.55 T: 73.23 seg
 #ant = AntColony(c, 10, 1, 100, 0.5) # R: 10345.60 T: 78.09 seg
 #ant = AntColony(c, 10, 1, 1000, 0.1) # R: 8677.13 T: 728.56 seg
 #ant = AntColony(c, 10, 1, 1000, 0.5) # R: 8280.19 T: 822.73 seg

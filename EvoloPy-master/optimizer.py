@@ -5,27 +5,17 @@ Created on Tue May 17 15:50:25 2016
 @author: hossam
 """
 from pathlib import Path
-import optimizers.PSO as pso
-import optimizers.MVO as mvo
 import optimizers.GWO as gwo
-import optimizers.MFO as mfo
-import optimizers.CS as cs
-import optimizers.BAT as bat
-import optimizers.WOA as woa
-import optimizersDiogo.WOA2 as woa2
+import optimizersDiogo.WOA as woa
+import optimizers.PSO as pso
+import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.WOA3 as woa3
-import optimizersDiogo.WOAI as woai
+import optimizersDiogo.IWOA as iwoa
 import optimizersDiogo.WOAI2 as woai2
 import optimizersDiogo.WOAI3 as woai3
 import optimizersDiogo.WOAAC as woaac
-import optimizersDiogo.WOAC as woac
-import optimizers.FFA as ffa
-import optimizers.SSA as ssa
-import optimizers.GA as ga
-import optimizers.HHO as hho
-import optimizers.SCA as sca
-import optimizers.JAYA as jaya
-import optimizers.DE as de
+import optimizersDiogo.CWOA as cwoa
+import optimizersDiogo.ACO as aco
 import optimizersDiogo.NatureChainAlgorithm as nca
 import benchmarks
 import csv
@@ -46,48 +36,26 @@ def selector(algo,func_details,popSize,Iter):
     dim=func_details[3]
     
 
-    if(algo=="SSA"):
-        x=ssa.SSA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="PSO"):
-        x=pso.PSO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="GA"):
-        x=ga.GA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="BAT"):
-        x=bat.BAT(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="FFA"):
-        x=ffa.FFA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
+    if(algo=="PSO"):
+        x=pso.PSO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)       
     elif(algo=="GWO"):
         x=gwo.GWO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
     elif(algo=="WOA"):
         x=woa.WOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="WOA2"):
-        x=woa2.WOA2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="WOANL"):
+        x=woanl.WOANL(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOA3"):
         x=woa3.WOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
-    elif(algo=="WOAI"):
-        x=woai.WOAI(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="IWOA"):
+        x=iwoa.IWOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAI2"):
         x=woai2.WOAI2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAI3"):
         x=woai3.WOAI3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAAC"):
-        x=woaac.WOAAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="WOAC"):
-        x=woac.WOAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)         
-    elif(algo=="MVO"):
-        x=mvo.MVO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="MFO"):
-        x=mfo.MFO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="CS"):
-        x=cs.CS(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)     
-    elif(algo=="HHO"):
-        x=hho.HHO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="SCA"):
-        x=sca.SCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="JAYA"):
-        x=jaya.JAYA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="DE"):
-        x=de.DE(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+        x=woaac.WOAAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
+    elif(algo=="CWOA"):
+        x=cwoa.CWOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)   
     elif(algo=="NCA"):
         x=nca.NCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)      
     else:

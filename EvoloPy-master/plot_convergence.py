@@ -3,7 +3,7 @@ import pandas as pd
 
 def run(results_directory, optimizer, objectivefunc, Iterations):
     plt.ioff()
-    fileResultsData = pd.read_csv(results_directory + '/experiment_details.csv')
+    fileResultsData = pd.read_csv(results_directory + '/experiment.csv')
 
     for j in range (0, len(objectivefunc)):
         objective_name = objectivefunc[j]
@@ -16,7 +16,7 @@ def run(results_directory, optimizer, objectivefunc, Iterations):
             optimizer_name = optimizer[i]
 
             row = fileResultsData[(fileResultsData["Optimizer"] == optimizer_name) & (fileResultsData["objfname"] == objective_name)]
-            row = row.iloc[:, 5+startIteration:]
+            row = row.iloc[:, 3+startIteration:]
             plt.plot(allGenerations, row.values.tolist()[0], label=optimizer_name)
         plt.yscale('log')
         plt.xlabel('Iterations')

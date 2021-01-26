@@ -87,7 +87,7 @@ def WOAAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             #C=2*r2      # Eq. (2.4) in the paper
            
             # A-C Parametric
-            Cmin = 0.2
+            Cmin = 0.4
             Cmax = 0.9
             C = Cmin + (Cmax - Cmin) * (t-1 / Max_iter -1)
 
@@ -105,19 +105,23 @@ def WOAAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                     if abs(A)>=1:
                         rand_leader_index = math.floor(SearchAgents_no*random.random());
                         X_rand = Positions[rand_leader_index, :]
-                        D_X_rand=abs(C*X_rand[j]-Positions[i,j]) 
-                        Positions[i,j]=w*X_rand[j]-A*D_X_rand      
+                        if X_rand[j] != Leader_pos[j]:
+                            D_Leader=abs(C*X_rand[j]-Positions[i,j])             
+
+                        Positions[i,j]=w*X_rand[j]-A*D_Leader      
                             
                     elif abs(A)<1:
-                        D_Leader=abs(C*Leader_pos[j]) 
+                        if Positions[i,j] != Leader_pos[j]:
+                            D_Leader=abs(C*Leader_pos[j]-Positions[i,j]) 
+                        
                         Positions[i,j]=w*Leader_pos[j]-A*D_Leader     
                         
                         
                 elif p>=0.5:
                     if Positions[i,j] != Leader_pos[j]:
-                        distance2Leader=abs(C*Leader_pos[j]-Positions[i,j])
+                        D_Leader=abs(C*Leader_pos[j]-Positions[i,j])
                         # Eq. (2.5)                        
-                        Positions[i,j]=distance2Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
+                    Positions[i,j]=D_Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
                       
             
         convergence_curve[t]=Leader_score

@@ -4,9 +4,41 @@ Created on Tue May 17 12:46:20 2016
 
 @author: Hossam Faris
 """
+import sys
+sys.path.append(".")
 
 import numpy
 import math
+import random
+from Util.TSPReader import TSPReader
+
+def PATH(x, distances, dim):
+    values = numpy.zeros(dim)
+    start = int(x[0])
+    total_x = 0
+    for i in range(1, len(x)):
+        end = int(x[i])
+        total_x += distances[start][end]
+        values[i] = distances[start][end]
+        start = end
+    
+    return total_x, values
+
+def opt2(x):
+    opt = random.sample(list(x), 4)
+    z = list(x).index(int(opt[0]))
+    y = list(x).index(int(opt[1]))
+
+    x[z] = int(opt[1])
+    x[y] = int(opt[0])
+
+    z = list(x).index(int(opt[2]))
+    y = list(x).index(int(opt[3]))
+
+    x[z] = int(opt[3])
+    x[y] = int(opt[2])
+    
+    return x
 
 # define the function blocks
 def prod( it ):
@@ -49,7 +81,6 @@ def F6(x):
 
 def F7(x):
    dim=len(x);
-
    w=[i for i in range(len(x))]
    for i in range(0,dim):
         w[i]=i+1;
@@ -57,7 +88,7 @@ def F7(x):
    return o;
 
 def F8(x):
-    o=sum(-x*(numpy.sin(numpy.sqrt(abs(x)))));
+    o=numpy.sum(-x*(numpy.sin(numpy.sqrt(abs(x)))));
     return o;
 
 def F9(x):
@@ -188,7 +219,8 @@ def F23(L):
 def getFunctionDetails(a):
     
     # [name, lb, ub, dim]
-    param = {  "F1": ["F1",-100,100,30],
+    param = {  "PATH": ["PATH", 0, 52, 52],
+               "F1": ["F1",-100,100,30],
                "F2" : ["F2",-10,10,30],
                "F3" : ["F3",-100,100,30],
                "F4" : ["F4",-100,100,30] ,
@@ -210,7 +242,7 @@ def getFunctionDetails(a):
                "F20" : ["F20",0,1,6],
                "F21" : ["F21",0,10,4],
                "F22" : ["F22",0,10,4],
-               "F23" : ["F23",0,10,4],
+               "F23" : ["F23",0,10,4],              
             }
     return param.get(a, "nothing")
 
