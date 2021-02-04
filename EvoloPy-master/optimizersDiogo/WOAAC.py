@@ -101,8 +101,20 @@ def WOAAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             for j in range(0,dim):
                 if Positions[i,j] == Leader_pos[j]:
                     D_Leader=abs(C*Leader_pos[j])    
-                if p<0.5:
-                    if abs(A)>=1:
+                if p>=0.5:
+                    if Positions[i,j] != Leader_pos[j]:
+                        D_Leader=abs(C*Leader_pos[j]-Positions[i,j])
+                        # Eq. (2.5)                        
+                    Positions[i,j]=D_Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w 
+                
+                else:
+                    if abs(A)<1:
+                        if Positions[i,j] != Leader_pos[j]:
+                            D_Leader=abs(C*Leader_pos[j]-Positions[i,j]) 
+                        
+                        Positions[i,j]=w*Leader_pos[j]-A*D_Leader  
+                        
+                    elif abs(A)>=1:
                         rand_leader_index = math.floor(SearchAgents_no*random.random());
                         X_rand = Positions[rand_leader_index, :]
                         if X_rand[j] != Leader_pos[j]:
@@ -110,18 +122,9 @@ def WOAAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
                         Positions[i,j]=w*X_rand[j]-A*D_Leader      
                             
-                    elif abs(A)<1:
-                        if Positions[i,j] != Leader_pos[j]:
-                            D_Leader=abs(C*Leader_pos[j]-Positions[i,j]) 
+                    
                         
-                        Positions[i,j]=w*Leader_pos[j]-A*D_Leader     
-                        
-                        
-                elif p>=0.5:
-                    if Positions[i,j] != Leader_pos[j]:
-                        D_Leader=abs(C*Leader_pos[j]-Positions[i,j])
-                        # Eq. (2.5)                        
-                    Positions[i,j]=D_Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
+                 
                       
             
         convergence_curve[t]=Leader_score

@@ -11,8 +11,8 @@ import optimizers.PSO as pso
 import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.WOA3 as woa3
 import optimizersDiogo.IWOA as iwoa
-import optimizersDiogo.WOAI2 as woai2
-import optimizersDiogo.WOAI3 as woai3
+import optimizersDiogo.IWOA2 as iwoa2
+import optimizersDiogo.IWOA3 as iwoa3
 import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
@@ -48,10 +48,10 @@ def selector(algo,func_details,popSize,Iter):
         x=woa3.WOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
     elif(algo=="IWOA"):
         x=iwoa.IWOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="WOAI2"):
-        x=woai2.WOAI2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="WOAI3"):
-        x=woai3.WOAI3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="IWOA2"):
+        x=iwoa2.IWOA2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="IWOA3"):
+        x=iwoa3.IWOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="WOAAC"):
         x=woaac.WOAAC(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
     elif(algo=="CWOA"):

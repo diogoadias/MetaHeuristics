@@ -10,35 +10,6 @@ sys.path.append(".")
 import numpy
 import math
 import random
-from Util.TSPReader import TSPReader
-
-def PATH(x, distances, dim):
-    values = numpy.zeros(dim)
-    start = int(x[0])
-    total_x = 0
-    for i in range(1, len(x)):
-        end = int(x[i])
-        total_x += distances[start][end]
-        values[i] = distances[start][end]
-        start = end
-    
-    return total_x, values
-
-def opt2(x):
-    opt = random.sample(list(x), 4)
-    z = list(x).index(int(opt[0]))
-    y = list(x).index(int(opt[1]))
-
-    x[z] = int(opt[1])
-    x[y] = int(opt[0])
-
-    z = list(x).index(int(opt[2]))
-    y = list(x).index(int(opt[3]))
-
-    x[z] = int(opt[3])
-    x[y] = int(opt[2])
-    
-    return x
 
 # define the function blocks
 def prod( it ):
