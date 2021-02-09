@@ -96,7 +96,8 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     # Main loop
     while t<=Max_iter-1:
         
-        algorithm = ["PSO", "GWO", "WOA", "IWOA", "CWOA", "WOANL", "WOAAC"]     
+        # algorithm = ["PSO", "GWO", "WOA", "IWOA", "CWOA", "WOANL", "WOAAC"]
+        algorithm = ["PSO", "GWO", "WOA"]          
         
         while len(algorithm) > 0:
             prob = numpy.random.random_sample(len(algorithm))

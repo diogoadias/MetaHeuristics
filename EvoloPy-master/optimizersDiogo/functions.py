@@ -460,6 +460,8 @@ def woaac(objf, t, Max_iter, SearchAgents_no, dim, Positions, lb, ub, Leader_pos
         p = random.random()        # p in Eq. (2.6)
                 
         for j in range(0,dim):
+            D_Leader = Positions[i, j] # fix algorithm problem
+
             if Positions[i,j] == Leader_pos[j]:
                 D_Leader=abs(C*Leader_pos[j])    
             if p>=0.5:

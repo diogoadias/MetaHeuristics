@@ -91,7 +91,8 @@ def CWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             p = random.random()        # p in Eq. (2.6)
 
             # Chaotic maps
-            cm = numpy.random.choice(numpy.arange(8))
+            # cm = numpy.random.choice(numpy.arange(8))
+            cm = 8
 
             if cm == 1:
                 # Logistic
