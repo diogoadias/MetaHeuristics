@@ -69,13 +69,14 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             Prey_old = Prey
 
         Inx = (fit_old < fitness)
-        Indx = Inx.copy()
-        Prey = Indx * Prey_old +~(Indx)*fitness
+        # Indx = mb.repmat(Inx, 1, dim)
+        Indx = numpy.full(shape=dim, fill_value=Inx)
+        Prey = Indx*Prey_old +~(Indx)*Prey
         fitness = Inx*fit_old+~(Indx)*fitness
 
         fit_old = fitness
         Prey_old = Prey
-
+            
         Elite = mb.repmat(Top_predator_pos, SearchAgents_no, 1)
         CF = (1-t/Max_iter)**(2*t/Max_iter)
 
@@ -125,7 +126,7 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             Prey_old = Prey
 
         Inx = fit_old < fitness
-        Indx = Inx.copy()
+        Indx = numpy.full(shape=dim, fill_value=Inx)
         Prey = Indx*Prey_old+~(Inx)*fitness
         fitness = Inx*fit_old+~(Inx) * fitness
 
