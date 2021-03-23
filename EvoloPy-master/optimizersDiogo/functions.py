@@ -3,6 +3,17 @@ import numpy
 import random
 import math
 
+def levy(n, m, beta):
+    num = math.gamma(1+beta)*math.sin(math.pi*beta/2)
+    den = math.gamma((1+beta)/2)*beta*2**((beta-1)/2)
+    sigma_u = (num/den)**(1/beta)
+    u = numpy.random.normal(0, sigma_u, (n,m))
+    v = numpy.random.normal(0, 1, (n,m))
+    z = u/(abs(v)**(1/beta))
+
+    return z
+
+
 def gwo(objf, t, Max_iter, SearchAgents_no, dim, Positions, lb, ub, Alpha_pos, Beta_pos, Delta_pos, Alpha_score, Beta_score, Delta_score):
     for i in range(0,SearchAgents_no):
         #Positions[i,:]=checkBounds(Positions[i,:],lb,ub)

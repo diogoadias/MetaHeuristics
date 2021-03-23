@@ -17,6 +17,7 @@ import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
 import optimizersDiogo.NatureChainAlgorithm as nca
+import optimizersDiogo.MPA as mpa
 import benchmarks
 import csv
 import numpy
@@ -57,7 +58,9 @@ def selector(algo,func_details,popSize,Iter):
     elif(algo=="CWOA"):
         x=cwoa.CWOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)   
     elif(algo=="NCA"):
-        x=nca.NCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)      
+        x=nca.NCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="MPA"):
+        x=mpa.MPA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)      
     else:
         return null;
     return x
