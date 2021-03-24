@@ -129,7 +129,10 @@ def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.convergence=Convergence_curve
     s.optimizer="GWO"
     s.objfname=objf.__name__
-    
+    s.best = Leader_score
+    s.bestIndividual = Leader_pos
+    s.std = numpy.std(convergence_curve)
+    s.mean = numpy.average(convergence_curve)
     
     
     

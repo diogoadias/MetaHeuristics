@@ -160,7 +160,7 @@ def CWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.best = Leader_score
     s.bestIndividual = Leader_pos
     s.std = numpy.std(convergence_curve)
-    s.mean = numpy.mean(convergence_curve)
+    s.mean = numpy.average(convergence_curve)
        
     return s
 

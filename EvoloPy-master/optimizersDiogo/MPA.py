@@ -19,13 +19,13 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     stepsize = numpy.zeros((SearchAgents_no, dim))
     fitness = numpy.ones(dim) * numpy.inf
 
-    Xmin = numpy.ones(dim) * lb
-    Xmax = numpy.ones(dim) * ub
+    Xmin = mb.repmat(numpy.ones(dim)*lb, SearchAgents_no, 1)
+    Xmax = mb.repmat(numpy.ones(dim)*ub, SearchAgents_no, 1)
 
-    FADs = 0.2
+    FADs=0.2
     P=0.5
 
-    # #Initialize the positions of search agents
+    # Initialize the positions of search agents
     Positions = numpy.zeros((SearchAgents_no, dim))
     Prey = numpy.zeros((SearchAgents_no, dim))
     for i in range(dim):
@@ -52,8 +52,8 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
         # Detecting top predator
         for i in range(0, len(Prey)):
 
-            Flag4ub = Prey[i,:] > ub
-            flag4lb = Prey[i,:] < lb
+            Flag4ub = Prey[i,:]>ub
+            flag4lb = Prey[i,:]<lb
             Prey[i,:] = (Prey[i,:]*(~(Flag4ub+flag4lb)))+ub*Flag4ub+lb*flag4lb
 
             fitness = objf(Prey[i,:])
@@ -69,13 +69,13 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             Prey_old = Prey
 
         Inx = (fit_old < fitness)
-        # Indx = mb.repmat(Inx, 1, dim)
         Indx = numpy.full(shape=dim, fill_value=Inx)
-        Prey = Indx*Prey_old +~(Indx)*Prey
-        fitness = Inx*fit_old+~(Indx)*fitness
+        Prey = Indx*Prey_old +~Indx*Prey
+        fitness = Inx*fit_old+~Inx*fitness
 
         fit_old = fitness
         Prey_old = Prey
+        #############################################
             
         Elite = mb.repmat(Top_predator_pos, SearchAgents_no, 1)
         CF = (1-t/Max_iter)**(2*t/Max_iter)
@@ -84,7 +84,7 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
         RB = numpy.random.randn(SearchAgents_no, dim)
 
         for i in range(0, len(Prey)):
-            for j in range(0, len(Prey)):
+            for j in range(0, len(Prey[i])):
                 R = random.random()
 
                 # Phase 1
@@ -125,10 +125,10 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             fit_old = fitness
             Prey_old = Prey
 
-        Inx = fit_old < fitness
+        Inx = (fit_old < fitness)
         Indx = numpy.full(shape=dim, fill_value=Inx)
-        Prey = Indx*Prey_old+~(Inx)*fitness
-        fitness = Inx*fit_old+~(Inx) * fitness
+        Prey = Indx*Prey_old+~Indx*Prey
+        fitness = Inx*fit_old+~Inx * fitness
 
         fit_old = fitness
         Prey_old = Prey
@@ -157,7 +157,7 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.best = Top_predator_fit
     s.bestIndividual = Top_predator_pos
     s.std = numpy.std(convergence_curve)
-    s.mean = numpy.mean(convergence_curve)
+    s.mean = numpy.average(convergence_curve)
        
     return s
     

@@ -5,9 +5,9 @@ Created on Tue May 17 15:50:25 2016
 @author: hossam
 """
 from pathlib import Path
-import optimizers.GWO as gwo
+import optimizersDiogo.GWO as gwo
 import optimizersDiogo.WOA as woa
-import optimizers.PSO as pso
+import optimizersDiogo.PSO as pso
 import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.WOA3 as woa3
 import optimizersDiogo.IWOA as iwoa
@@ -16,7 +16,7 @@ import optimizersDiogo.IWOA3 as iwoa3
 import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
-import optimizersDiogo.NatureChainAlgorithm as nca
+import optimizersDiogo.NCA as nca
 import optimizersDiogo.MPA as mpa
 import benchmarks
 import csv
@@ -133,7 +133,7 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
                     with open(ExportToFile, 'a',newline='\n') as out:
                         writer = csv.writer(out,delimiter=',')
                         if (Flag_details==False): # just one time to write the header of the CSV file
-                            header= numpy.concatenate([["Optimizer","objfname","ExecutionTime", "Mean", "STD"],CnvgHeader])
+                            header= numpy.concatenate([["Optimizer","objfname","ExecutionTime", "AVE", "STD"],CnvgHeader])
                             writer.writerow(header)
                             Flag_details=True # at least one experiment
                         executionTime[k] = x.executionTime
