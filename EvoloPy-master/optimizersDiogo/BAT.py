@@ -110,8 +110,8 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
     s.convergence=Convergence_curve
     s.optimizer="BAT"   
     s.objfname=objf.__name__
-    s.best = Leader_score
-    s.bestIndividual = Leader_pos
+    s.best = fmin
+    s.bestIndividual = best
     s.std = numpy.std(convergence_curve)
     s.mean = numpy.average(convergence_curve)
     

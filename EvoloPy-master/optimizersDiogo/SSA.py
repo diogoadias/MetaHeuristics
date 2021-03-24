@@ -126,8 +126,8 @@ def SSA(objf,lb,ub,dim,N,Max_iteration):
     s.convergence=Convergence_curve
     s.optimizer="SSA"   
     s.objfname=objf.__name__
-    s.best = Leader_score
-    s.bestIndividual = Leader_pos
+    s.best = FoodFitness
+    s.bestIndividual = FoodPosition
     s.std = numpy.std(convergence_curve)
     s.mean = numpy.average(convergence_curve)
     

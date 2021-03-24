@@ -101,8 +101,8 @@ def PSO(objf,lb,ub,dim,PopSize,iters):
     s.convergence=convergence_curve
     s.optimizer="PSO"
     s.objfname=objf.__name__
-    s.best = best_all
-    s.bestIndividual = best_position
+    s.best = gBestScore
+    s.bestIndividual = None
     s.std = numpy.std(convergence_curve)
     s.mean = numpy.average(convergence_curve)
 

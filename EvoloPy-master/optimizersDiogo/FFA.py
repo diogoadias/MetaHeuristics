@@ -146,8 +146,8 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration):
     s.convergence=convergence
     s.optimizer="FFA"
     s.objfname=objf.__name__
-    s.best = Leader_score
-    s.bestIndividual = Leader_pos
+    s.best = BestQuality
+    s.bestIndividual = None
     s.std = numpy.std(convergence_curve)
     s.mean = numpy.average(convergence_curve)
     
