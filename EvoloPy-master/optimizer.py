@@ -18,6 +18,10 @@ import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
 import optimizersDiogo.NCA as nca
 import optimizersDiogo.MPA as mpa
+import optimizersDiogo.BAT as bat
+import optimizersDiogo.FFA as ffa
+import optimizersDiogo.MFO as mfo
+import optimizersDiogo.SSA as ssa
 import benchmarks
 import csv
 import numpy
@@ -60,7 +64,16 @@ def selector(algo,func_details,popSize,Iter):
     elif(algo=="NCA"):
         x=nca.NCA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="MPA"):
-        x=mpa.MPA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)      
+        x=mpa.MPA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter) 
+    elif(algo=="BAT"):
+        x=bat.BAT(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)          
+    elif(algo=="FFA"):
+        x=ffa.FFA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter) 
+    elif(algo=="SSA"):
+        x=ssa.SSA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
+    elif(algo=="MFO"):
+        x=mfo.MFO(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)  
+    
     else:
         return null;
     return x
