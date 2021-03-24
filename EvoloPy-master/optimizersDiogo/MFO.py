@@ -36,7 +36,7 @@ def MFO(objf,lb,ub,dim,N,Max_iteration):
     Moth_fitness=numpy.full(N,float("inf"))
     #Moth_fitness=numpy.fell(float("inf"))
     
-    Convergence_curve=numpy.zeros(Max_iteration)
+    convergence_curve=numpy.zeros(Max_iteration)
     
     
     sorted_population=numpy.copy(Moth_pos)
@@ -150,7 +150,7 @@ def MFO(objf,lb,ub,dim,N,Max_iteration):
     #                % Eq. (3.12)
                     Moth_pos[i,j]=distance_to_flame*math.exp(b*t)*math.cos(t*2*math.pi)+sorted_population[Flame_no,j]
         
-        Convergence_curve[Iteration]=Best_flame_score
+        convergence_curve[Iteration]=Best_flame_score
         #Display best fitness along the iteration
         if (Iteration%1==0):
             print(['At iteration '+ str(Iteration)+ ' the best fitness is '+ str(Best_flame_score)]);
@@ -163,7 +163,7 @@ def MFO(objf,lb,ub,dim,N,Max_iteration):
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
-    s.convergence=Convergence_curve
+    s.convergence=convergence_curve
     s.optimizer="MFO"   
     s.objfname=objf.__name__
     s.best = Best_flame_score

@@ -33,7 +33,7 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
     # Initializing arrays
     Q=numpy.zeros(n)  # Frequency
     v=numpy.zeros((n,d))  # Velocities
-    Convergence_curve=[];
+    convergence_curve=[];
     fmin = float("inf")
     
     # Initialize the population/solutions
@@ -107,7 +107,7 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
-    s.convergence=Convergence_curve
+    s.convergence=convergence_curve
     s.optimizer="BAT"   
     s.objfname=objf.__name__
     s.best = fmin

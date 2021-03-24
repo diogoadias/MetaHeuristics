@@ -19,7 +19,7 @@ def SSA(objf,lb,ub,dim,N,Max_iteration):
         lb = [lb] * dim
     if not isinstance(ub, list):
         ub = [ub] * dim
-    Convergence_curve=numpy.zeros(Max_iteration)
+    convergence_curve=numpy.zeros(Max_iteration)
 
         
     #Initialize the positions of salps
@@ -123,7 +123,7 @@ def SSA(objf,lb,ub,dim,N,Max_iteration):
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
-    s.convergence=Convergence_curve
+    s.convergence=convergence_curve
     s.optimizer="SSA"   
     s.objfname=objf.__name__
     s.best = FoodFitness

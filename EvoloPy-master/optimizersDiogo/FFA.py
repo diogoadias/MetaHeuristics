@@ -69,7 +69,7 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration):
     
     #[ns,Lightn]=init_ffa(n,d,Lb,Ub,u0)
     
-    convergence=[]
+    convergence_curve=[]
     s=solution()
 
      
@@ -131,7 +131,7 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration):
         
         #ns=numpy.clip(ns, lb, ub)
         
-        convergence.append(fbest)
+        convergence_curve.append(fbest)
         	
         IterationNumber=k
         BestQuality=fbest
@@ -143,7 +143,7 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration):
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
-    s.convergence=convergence
+    s.convergence=convergence_curve
     s.optimizer="FFA"
     s.objfname=objf.__name__
     s.best = BestQuality
