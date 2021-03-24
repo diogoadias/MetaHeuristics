@@ -98,7 +98,7 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
                 fmin=Fnew
                 
         #update convergence curve
-        Convergence_curve.append(fmin)        
+        convergence_curve.append(fmin)        
 
         if (t%1==0):
             print(['At iteration '+ str(t)+ ' the best fitness is '+ str(fmin)])

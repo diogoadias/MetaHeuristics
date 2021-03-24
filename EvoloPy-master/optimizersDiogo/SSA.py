@@ -116,7 +116,7 @@ def SSA(objf,lb,ub,dim,N,Max_iteration):
     
     
     
-        Convergence_curve[Iteration]=FoodFitness
+        convergence_curve[Iteration]=FoodFitness
     
         Iteration=Iteration+1; 
     
