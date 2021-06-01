@@ -43,7 +43,7 @@ def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1, SearchAgents_no) * (ub[i] - lb[i]) + lb[i]
     
-    Convergence_curve=numpy.zeros(Max_iter)
+    convergence_curve=numpy.zeros(Max_iter)
     s=solution()
 
      # Loop counter
@@ -118,7 +118,7 @@ def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             
         
         
-        Convergence_curve[l]=Alpha_score;
+        convergence_curve[l]=Alpha_score;
 
         if (l%1==0):
                print(['At iteration '+ str(l)+ ' the best fitness is '+ str(Alpha_score)]);
@@ -126,11 +126,11 @@ def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
-    s.convergence=Convergence_curve
+    s.convergence=convergence_curve
     s.optimizer="GWO"
     s.objfname=objf.__name__
-    s.best = Leader_score
-    s.bestIndividual = Leader_pos
+    s.best = Alpha_score
+    s.bestIndividual = Alpha_pos
     s.std = numpy.std(convergence_curve)
     s.mean = numpy.average(convergence_curve)
     
