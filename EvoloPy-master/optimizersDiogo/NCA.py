@@ -12,7 +12,14 @@ import math
 import cmath
 from solution import solution
 import time
-import optimizersDiogo.WOA as woaOriginal
+import optimizersDiogo.GWO as gwo
+import optimizersDiogo.MFO as mfo
+import optimizersDiogo.MPA as mpa
+import optimizersDiogo.PSO as pso
+import optimizersDiogo.WOA as woa
+import optimizersDiogo.FFA as ffa
+import optimizersDiogo.SSA as ssa
+import optimizersDiogo.BAT as bat
 import optimizersDiogo.functions as f
 
 def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
@@ -25,52 +32,9 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             
     # Best of all times
     best_all=float("inf")
-    best_position =numpy.zeros(dim)
-
-    # initialize position vector and score for the leader (WOA)
-    Leader_pos=numpy.zeros(dim)
-    Leader_score=float("inf")  #change this to -inf for maximization problems
-
-    # initialize alpha, beta, and delta_pos (GWO)
-    Alpha_pos=numpy.zeros(dim)
-    Alpha_score=float("inf")
-    
-    Beta_pos=numpy.zeros(dim)
-    Beta_score=float("inf")
-    
-    Delta_pos=numpy.zeros(dim)
-    Delta_score=float("inf")
-
-    # PSO parameters    
-    Vmax=6
-    wMax=0.9
-    wMin=0.2
-    c1=2
-    c2=2
-
-    vel=numpy.zeros((SearchAgents_no,dim))
-    
-    pBestScore=numpy.zeros(SearchAgents_no) 
-    pBestScore.fill(float("inf"))
-    
-    pBest=numpy.zeros((SearchAgents_no,dim))
-    gBest=numpy.zeros(dim)
-
-    gBestScore=float("inf")
-
-    #BAT parameters
-    # A=0.5;      # Loudness  (constant or decreasing)
-    # r=0.5;      # Pulse rate (constant or decreasing)
-    
-    # Qmin=0         # Frequency minimum
-    # Qmax=2         # Frequency maximum
-
-    # Q=numpy.zeros(SearchAgents_no)  # Frequency
-    # v=numpy.zeros((SearchAgents_no,dim))  # Velocities
-    # fmin = float("inf")     
+    best_position =numpy.zeros(dim)        
         
-        
-    # #Initialize the positions of search agents
+    #Initialize the positions of search agents
     Positions = numpy.zeros((SearchAgents_no, dim))
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
@@ -97,7 +61,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     while t<=Max_iter-1:
         
         # algorithm = ["PSO", "GWO", "WOA", "IWOA", "CWOA", "WOANL", "WOAAC"]
-        algorithm = ["PSO", "GWO", "WOA"]          
+        algorithm = ["PSO", "GWO", "WOA", "FFA", "MFO", "MPA", "SSA", "BAT"]          
         
         while len(algorithm) > 0:
             prob = numpy.random.random_sample(len(algorithm))
@@ -106,99 +70,132 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             choice = numpy.random.choice(algorithm,p=prob)
             
             #PSO
-            if(choice == "PSO" and t < Max_iter):
-                if gBestScore > best_all:
-                    gBestScore = best_all
-                    gBest = best_position        
-                best_all, best_position, Positions = f.pso(objf, t, Max_iter, SearchAgents_no, dim, Positions, lb, ub, Vmax, wMax, wMin, c1, c2, vel, pBest, gBest, pBestScore, gBestScore)            
+            if(choice == "PSO" and t < Max_iter):                     
+                best_all, best_position, Positions = pso.PSO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("PSO")
                 algorithm.remove("PSO")               
                 prob = numpy.delete(prob, index)
                 convergence_curve[t]=best_all
-                t=t+1                     
+                                    
             
             #GWO
-            if(choice == "GWO" and t < Max_iter):
-                if Alpha_score > best_all:
-                    Alpha_score = best_all
-                    Alpha_pos = best_position            
-                best_all, best_position, Positions = f.gwo(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Alpha_pos, Beta_pos, Delta_pos, Alpha_score,  Beta_score,  Delta_score)               
+            if(choice == "GWO" and t < Max_iter):                         
+                best_all, best_position, Positions = gwo.GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)               
                 index = algorithm.index("GWO")
                 algorithm.remove("GWO")                
                 prob = numpy.delete(prob, index)
                 convergence_curve[t]=best_all
-                t=t+1                     
+                                     
             
             #WOA
-            if(choice == "WOA" and t < Max_iter):
-                if Leader_score > best_all:
-                    Leader_score = best_all
-                    Leader_pos = best_position   
-                best_all, best_position, Positions = f.woa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)
+            if(choice == "WOA" and t < Max_iter):                 
+                best_all, best_position, Positions = woa.WOA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("WOA")
                 algorithm.remove("WOA")
                 prob = numpy.delete(prob, index)
                 convergence_curve[t]=best_all
-                t=t+1               
+                
 
-            #IWOA
-            if(choice == "IWOA" and t < Max_iter):                
-                if Leader_score > best_all:
-                    Leader_score = best_all
-                    Leader_pos = best_position   
-                best_all, best_position, Positions = f.iwoa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-                index = algorithm.index("IWOA")
-                algorithm.remove("IWOA")                
+            #FFA
+            if(choice == "FFA" and t < Max_iter):                
+                best_all, best_position, Positions = ffa.FFA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("FFA")
+                algorithm.remove("FFA")
                 prob = numpy.delete(prob, index)
-                convergence_curve[t]=best_all 
-                t=t+1
+                convergence_curve[t]=best_all
+                
 
-            #CWOA
-            if(choice == "CWOA" and t < Max_iter):                
-                if Leader_score > best_all:
-                    Leader_score = best_all
-                    Leader_pos = best_position   
-                best_all, best_position, Positions = f.cwoa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-                index = algorithm.index("CWOA")
-                algorithm.remove("CWOA")                
+            #MFO
+            if(choice == "MFO" and t < Max_iter):                
+                best_all, best_position, Positions = mfo.MFO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("MFO")
+                algorithm.remove("MFO")
                 prob = numpy.delete(prob, index)
-                convergence_curve[t]=best_all 
-                t=t+1
+                convergence_curve[t]=best_all
+                
 
-            #WOANL
-            if(choice == "WOANL" and t < Max_iter):                
-                if Leader_score > best_all:
-                    Leader_score = best_all
-                    Leader_pos = best_position   
-                best_all, best_position, Positions = f.woanl(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-                index = algorithm.index("WOANL")
-                algorithm.remove("WOANL")                
+            #MPA
+            if(choice == "MPA" and t < Max_iter):
+                best_all, best_position, Positions = mpa.MPA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("MPA")
+                algorithm.remove("MPA")
                 prob = numpy.delete(prob, index)
-                convergence_curve[t]=best_all 
-                t=t+1
+                convergence_curve[t]=best_all
+                
 
-            #WOAAC
-            if(choice == "WOAAC" and t < Max_iter):                
-                if Leader_score > best_all:
-                    Leader_score = best_all
-                    Leader_pos = best_position   
-                best_all, best_position, Positions = f.woaac(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-                index = algorithm.index("WOAAC")
-                algorithm.remove("WOAAC")                
+            #SSA
+            if(choice == "SSA" and t < Max_iter):
+                best_all, best_position, Positions = ssa.SSA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("SSA")
+                algorithm.remove("SSA")
                 prob = numpy.delete(prob, index)
-                convergence_curve[t]=best_all 
-                t=t+1    
+                convergence_curve[t]=best_all
+                
+
+            #BAT
+            if(choice == "BAT" and t < Max_iter):
+                best_all, best_position, Positions = bat.BAT(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("BAT")
+                algorithm.remove("BAT")
+                prob = numpy.delete(prob, index)
+                convergence_curve[t]=best_all
+                                                                                 
+
+            # #IWOA
+            # if(choice == "IWOA" and t < Max_iter):                
+            #     if Leader_score > best_all:
+            #         Leader_score = best_all
+            #         Leader_pos = best_position   
+            #     best_all, best_position, Positions = f.iwoa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
+            #     index = algorithm.index("IWOA")
+            #     algorithm.remove("IWOA")                
+            #     prob = numpy.delete(prob, index)
+            #     convergence_curve[t]=best_all 
+            #     t=t+1
+
+            # #CWOA
+            # if(choice == "CWOA" and t < Max_iter):                
+            #     if Leader_score > best_all:
+            #         Leader_score = best_all
+            #         Leader_pos = best_position   
+            #     best_all, best_position, Positions = f.cwoa(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
+            #     index = algorithm.index("CWOA")
+            #     algorithm.remove("CWOA")                
+            #     prob = numpy.delete(prob, index)
+            #     convergence_curve[t]=best_all 
+            #     t=t+1
+
+            # #WOANL
+            # if(choice == "WOANL" and t < Max_iter):                
+            #     if Leader_score > best_all:
+            #         Leader_score = best_all
+            #         Leader_pos = best_position   
+            #     best_all, best_position, Positions = f.woanl(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
+            #     index = algorithm.index("WOANL")
+            #     algorithm.remove("WOANL")                
+            #     prob = numpy.delete(prob, index)
+            #     convergence_curve[t]=best_all 
+            #     t=t+1
+
+            # #WOAAC
+            # if(choice == "WOAAC" and t < Max_iter):                
+            #     if Leader_score > best_all:
+            #         Leader_score = best_all
+            #         Leader_pos = best_position   
+            #     best_all, best_position, Positions = f.woaac(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
+            #     index = algorithm.index("WOAAC")
+            #     algorithm.remove("WOAAC")                
+            #     prob = numpy.delete(prob, index)
+            #     convergence_curve[t]=best_all 
+            #     t=t+1    
 
             if (t%1==0):
                 print(['At iteration '+ str(t)+ ' the best fitness is '+ str(best_all)]); 
 
             if (t == Max_iter):
-                break                       
+                break
 
-         
-        
-        
-        
+            t=t+1                        
         
     timerEnd=time.time()  
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")

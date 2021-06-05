@@ -22,10 +22,6 @@ import math
 import time
 from solution import solution
 
-
-
-
-
 def alpha_new(alpha,NGen):
     #% alpha_n=alpha_0(1-delta)^NGen=10^(-4);
     #% alpha_0=0.9
@@ -35,7 +31,7 @@ def alpha_new(alpha,NGen):
 
 
 
-def FFA(objf,lb,ub,dim,n,MaxGeneration):
+def FFA(objf,lb,ub,dim,n,MaxGeneration,Positions, best_all, best_position,t):
 
     #General parameters
 
@@ -56,102 +52,73 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration):
     
     
     
-    zn=numpy.ones(n)
-    zn.fill(float("inf")) 
+    zn=best_position
+    #zn.fill(float("inf")) 
     
     
     #ns(i,:)=Lb+(Ub-Lb).*rand(1,d);
-    ns = numpy.zeros((n, dim))
-    for i in range(dim):
-        ns[:, i] = numpy.random.uniform(0,1, n) * (ub[i] - lb[i]) + lb[i]
+    ns = Positions
     Lightn=numpy.ones(n)
     Lightn.fill(float("inf")) 
     
     #[ns,Lightn]=init_ffa(n,d,Lb,Ub,u0)
-    
-    convergence_curve=[]
-    s=solution()
-
      
-    print("CS is optimizing  \""+objf.__name__+"\"")    
+    print("FFA is optimizing  \""+objf.__name__+"\"")    
     
-    timerStart=time.time() 
-    s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
+    timerStart=time.time()    
     
     # Main loop
-    for k in range (0,MaxGeneration):     # start iterations
+    #for k in range (0,MaxGeneration):     # start iterations
     
-        #% This line of reducing alpha is optional
-        alpha=alpha_new(alpha,MaxGeneration);
+    #% This line of reducing alpha is optional
+    alpha=alpha_new(alpha,MaxGeneration);
         
-        #% Evaluate new solutions (for all n fireflies)
-        for i in range(0,n):
-            zn[i]=objf(ns[i,:])
-            Lightn[i]=zn[i]
+    #% Evaluate new solutions (for all n fireflies)
+    for i in range(0,n):
+        zn[i]=objf(ns[i,:])
+        Lightn[i]=zn[i]
         
         
                 
         
-        # Ranking fireflies by their light intensity/objectives
+    # Ranking fireflies by their light intensity/objectives
     
         
-        Lightn=numpy.sort(zn)
-        Index=numpy.argsort(zn)
-        ns=ns[Index,:]
+    Lightn=numpy.sort(zn)
+    Index=numpy.argsort(zn)
+    ns=ns[Index,:]
         
         
-        #Find the current best
-        nso=ns
-        Lighto=Lightn
-        nbest=ns[0,:] 
-        Lightbest=Lightn[0]
+    #Find the current best
+    nso=ns
+    Lighto=Lightn
+    nbest=ns[0,:] 
+    Lightbest=Lightn[0]
         
-        #% For output only
-        fbest=Lightbest;
+    #% For output only
+    fbest=Lightbest;
         
-        #% Move all fireflies to the better locations
+    #% Move all fireflies to the better locations
     #    [ns]=ffa_move(n,d,ns,Lightn,nso,Lighto,nbest,...
     #          Lightbest,alpha,betamin,gamma,Lb,Ub);
-        scale = []
-        for b in range(dim):
-            scale.append(abs(ub[b] - lb[b]))
-        scale = numpy.array(scale)
-        for i in range (0,n):
-            # The attractiveness parameter beta=exp(-gamma*r)
-            for j in range(0,n):
-                r=numpy.sqrt(numpy.sum((ns[i,:]-ns[j,:])**2));
-                #r=1
-                # Update moves
-                if Lightn[i]>Lighto[j]: # Brighter and more attractive
-                   beta0=1
-                   beta=(beta0-betamin)*math.exp(-gamma*r**2)+betamin
-                   tmpf=alpha*(numpy.random.rand(dim)-0.5)*scale
-                   ns[i,:]=ns[i,:]*(1-beta)+nso[j,:]*beta+tmpf
+    scale = []
+    for b in range(dim):
+        scale.append(abs(ub[b] - lb[b]))
+    scale = numpy.array(scale)
+    for i in range (0,n):
+        # The attractiveness parameter beta=exp(-gamma*r)
+        for j in range(0,n):
+            r=numpy.sqrt(numpy.sum((ns[i,:]-ns[j,:])**2));
+            #r=1
+            # Update moves
+            if Lightn[i]>Lighto[j]: # Brighter and more attractive
+                beta0=1
+                beta=(beta0-betamin)*math.exp(-gamma*r**2)+betamin
+                tmpf=alpha*(numpy.random.rand(dim)-0.5)*scale
+                ns[i,:]=ns[i,:]*(1-beta)+nso[j,:]*beta+tmpf
         
         
-        #ns=numpy.clip(ns, lb, ub)
-        
-        convergence_curve.append(fbest)
-        	
-        IterationNumber=k
-        BestQuality=fbest
-        
-        if (k%1==0):
-               print(['At iteration '+ str(k)+ ' the best fitness is '+ str(BestQuality)])
-    #    
-       ####################### End main loop
-    timerEnd=time.time()  
-    s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
-    s.executionTime=timerEnd-timerStart
-    s.convergence=convergence_curve
-    s.optimizer="FFA"
-    s.objfname=objf.__name__
-    s.best = BestQuality
-    s.bestIndividual = None
-    s.std = numpy.std(convergence_curve)
-    s.mean = numpy.average(convergence_curve)
-    
-    return s
+    return fbest, nbest, ns
     
     
     

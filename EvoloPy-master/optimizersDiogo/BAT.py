@@ -11,7 +11,7 @@ import time
 from solution import solution
     
 
-def BAT(objf,lb,ub,dim,N,Max_iteration):
+def BAT(objf,lb,ub,dim,N,Max_iteration,Positions, best_all, best_position,t):
     
     n=N;      # Population size
 
@@ -34,12 +34,10 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
     Q=numpy.zeros(n)  # Frequency
     v=numpy.zeros((n,d))  # Velocities
     convergence_curve=[];
-    fmin = float("inf")
+    fmin = best_all
     
     # Initialize the population/solutions
-    Sol = numpy.zeros((n,d))
-    for i in range(dim):
-      Sol[:, i] = numpy.random.rand(n) * (ub[i]-lb[i])+lb[i]
+    Sol = Positions   
 
     S=numpy.zeros((n,d))
     S=numpy.copy(Sol)
@@ -60,61 +58,45 @@ def BAT(objf,lb,ub,dim,N,Max_iteration):
     
     
     # Find the initial best solution
-    I=numpy.argmin(Fitness)
-    best=Sol[I,:]
+    #I=numpy.argmin(Fitness)
+    best=best_position
            
     # Main loop
-    for t in range (0,N_gen): 
-        
-        # Loop over all bats(solutions)
-        for i in range (0,n):
-          Q[i]=Qmin+(Qmin-Qmax)*random.random()
-          v[i,:]=v[i,:]+(Sol[i,:]-best)*Q[i]
-          S[i,:]=Sol[i,:]+v[i,:]
+       
+    # Loop over all bats(solutions)
+    for i in range (0,n):
+      Q[i]=Qmin+(Qmin-Qmax)*random.random()
+      v[i,:]=v[i,:]+(Sol[i,:]-best)*Q[i]
+      S[i,:]=Sol[i,:]+v[i,:]
           
-          # Check boundaries
-          for j in range(d):
-            Sol[i,j] = numpy.clip(Sol[i,j], lb[j], ub[j])
-            
+      # Check boundaries
+      for j in range(d):
+        Sol[i,j] = numpy.clip(Sol[i,j], lb[j], ub[j])
 
-    
-          # Pulse rate
-          if random.random()>r:
-              S[i,:]=best+0.001*numpy.random.randn(d)
+        # Pulse rate
+        if random.random()>r:
+          S[i,:]=best+0.001*numpy.random.randn(d)
           
     
-          # Evaluate new solutions
-          Fnew=objf(S[i,:])
+        # Evaluate new solutions
+        Fnew=objf(S[i,:])
           
-          # Update if the solution improves
-          if ((Fnew<=Fitness[i]) and (random.random()<A) ):
-                Sol[i,:]=numpy.copy(S[i,:])
-                Fitness[i]=Fnew;
+        # Update if the solution improves
+        if ((Fnew<=Fitness[i]) and (random.random()<A) ):
+          Sol[i,:]=numpy.copy(S[i,:])
+          Fitness[i]=Fnew;
            
     
-          # Update the current best solution
-          if Fnew<=fmin:
-                best=numpy.copy(S[i,:])
-                fmin=Fnew
+        # Update the current best solution
+        if Fnew<=fmin:
+          best=numpy.copy(S[i,:])
+          fmin=Fnew
                 
         #update convergence curve
-        convergence_curve.append(fmin)        
+        #convergence_curve.append(fmin)        
 
-        if (t%1==0):
-            print(['At iteration '+ str(t)+ ' the best fitness is '+ str(fmin)])
+        #if (t%1==0):
+        #  print(['At iteration '+ str(t)+ ' the best fitness is '+ str(fmin)])
     
-    
-    timerEnd=time.time()  
-    s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
-    s.executionTime=timerEnd-timerStart
-    s.convergence=convergence_curve
-    s.optimizer="BAT"   
-    s.objfname=objf.__name__
-    s.best = fmin
-    s.bestIndividual = best
-    s.std = numpy.std(convergence_curve)
-    s.mean = numpy.average(convergence_curve)
-    
-    
-    
-    return s
+        
+    return fmin, best, Sol
