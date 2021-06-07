@@ -70,8 +70,8 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             choice = numpy.random.choice(algorithm,p=prob)
             
             #PSO
-            if(choice == "PSO" and t < Max_iter):                     
-                best_all, best_position, Positions = pso.PSO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+            if(choice == "PSO" and t < Max_iter):
+                best_so_far, best_position_so_far, Positions = pso.PSO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("PSO")
                 algorithm.remove("PSO")               
                 prob = numpy.delete(prob, index)
@@ -80,7 +80,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             
             #GWO
             if(choice == "GWO" and t < Max_iter):                         
-                best_all, best_position, Positions = gwo.GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)               
+                best_so_far, best_position_so_far, Positions = gwo.GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)               
                 index = algorithm.index("GWO")
                 algorithm.remove("GWO")                
                 prob = numpy.delete(prob, index)
@@ -89,7 +89,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             
             #WOA
             if(choice == "WOA" and t < Max_iter):                 
-                best_all, best_position, Positions = woa.WOA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = woa.WOA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("WOA")
                 algorithm.remove("WOA")
                 prob = numpy.delete(prob, index)
@@ -98,7 +98,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #FFA
             if(choice == "FFA" and t < Max_iter):                
-                best_all, best_position, Positions = ffa.FFA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = ffa.FFA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("FFA")
                 algorithm.remove("FFA")
                 prob = numpy.delete(prob, index)
@@ -107,7 +107,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #MFO
             if(choice == "MFO" and t < Max_iter):                
-                best_all, best_position, Positions = mfo.MFO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = mfo.MFO(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("MFO")
                 algorithm.remove("MFO")
                 prob = numpy.delete(prob, index)
@@ -116,7 +116,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #MPA
             if(choice == "MPA" and t < Max_iter):
-                best_all, best_position, Positions = mpa.MPA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = mpa.MPA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("MPA")
                 algorithm.remove("MPA")
                 prob = numpy.delete(prob, index)
@@ -125,7 +125,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #SSA
             if(choice == "SSA" and t < Max_iter):
-                best_all, best_position, Positions = ssa.SSA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = ssa.SSA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("SSA")
                 algorithm.remove("SSA")
                 prob = numpy.delete(prob, index)
@@ -134,7 +134,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #BAT
             if(choice == "BAT" and t < Max_iter):
-                best_all, best_position, Positions = bat.BAT(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = bat.BAT(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("BAT")
                 algorithm.remove("BAT")
                 prob = numpy.delete(prob, index)
@@ -187,7 +187,11 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             #     algorithm.remove("WOAAC")                
             #     prob = numpy.delete(prob, index)
             #     convergence_curve[t]=best_all 
-            #     t=t+1    
+            #     t=t+1
+
+            if(best_so_far < best_all):
+                best_all = best_so_far
+                best_position = best_position_so_far    
 
             if (t%1==0):
                 print(['At iteration '+ str(t)+ ' the best fitness is '+ str(best_all)]); 

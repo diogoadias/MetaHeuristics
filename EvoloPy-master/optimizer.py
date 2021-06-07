@@ -5,9 +5,9 @@ Created on Tue May 17 15:50:25 2016
 @author: hossam
 """
 from pathlib import Path
-import optimizersDiogo.GWO as gwo
-import optimizersDiogo.WOA as woa
-import optimizersDiogo.PSO as pso
+import optimizers.GWO as gwo
+import optimizers.WOA as woa
+import optimizers.PSO as pso
 import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.WOA3 as woa3
 import optimizersDiogo.IWOA as iwoa
@@ -18,10 +18,10 @@ import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
 import optimizersDiogo.NCA as nca
 import optimizersDiogo.MPA as mpa
-import optimizersDiogo.BAT as bat
-import optimizersDiogo.FFA as ffa
-import optimizersDiogo.MFO as mfo
-import optimizersDiogo.SSA as ssa
+import optimizers.BAT as bat
+import optimizers.FFA as ffa
+import optimizers.MFO as mfo
+import optimizers.SSA as ssa
 import benchmarks
 import csv
 import numpy

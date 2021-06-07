@@ -52,8 +52,8 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration,Positions, best_all, best_position,t):
     
     
     
-    zn=best_position
-    #zn.fill(float("inf")) 
+    zn=numpy.ones(n)
+    zn.fill(float("inf")) 
     
     
     #ns(i,:)=Lb+(Ub-Lb).*rand(1,d);
