@@ -17,7 +17,7 @@ import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
 import optimizersDiogo.NCA as nca
-import optimizersDiogo.MPA as mpa
+import optimizersDiogo.MPA_original as mpa
 import optimizers.BAT as bat
 import optimizers.FFA as ffa
 import optimizers.MFO as mfo
