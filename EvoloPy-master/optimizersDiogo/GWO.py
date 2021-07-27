@@ -15,8 +15,8 @@ import time
 def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter, Positions, best_all, best_position,t):
     
     # initialize alpha, beta, and delta_pos
-    Alpha_pos=best_position
-    Alpha_score=best_all
+    Alpha_pos=numpy.zeros(dim)
+    Alpha_score=float("inf")
     
     Beta_pos=numpy.zeros(dim)
     Beta_score=float("inf")
@@ -99,5 +99,3 @@ def GWO(objf,lb,ub,dim,SearchAgents_no,Max_iter, Positions, best_all, best_posit
         
                 
     return Alpha_score, Alpha_pos, Positions
-    
-

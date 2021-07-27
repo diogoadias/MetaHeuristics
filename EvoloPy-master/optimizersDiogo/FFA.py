@@ -45,10 +45,10 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration,Positions, best_all, best_position,t):
     alpha=0.5  # Randomness 0--1 (highly random)
     betamin=0.20  # minimum value of beta
     gamma=1   # Absorption coefficient
-    if not isinstance(lb, list):
-        lb = [lb] * dim
-    if not isinstance(ub, list):
-        ub = [ub] * dim
+    # if not isinstance(lb, list):
+    #     lb = [lb] * dim
+    # if not isinstance(ub, list):
+    #     ub = [ub] * dim
     
     
     

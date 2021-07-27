@@ -13,8 +13,8 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter, Prey, best_all, best_position,t
     if not isinstance(ub, list):
         ub = [ub] * dim
             
-    Top_predator_pos = best_position
-    Top_predator_fit = best_all 
+    Top_predator_pos = numpy.zeros(dim)
+    Top_predator_fit = float("inf")  
 
     stepsize = numpy.zeros((SearchAgents_no, dim))
     fitness = numpy.ones(dim) * numpy.inf

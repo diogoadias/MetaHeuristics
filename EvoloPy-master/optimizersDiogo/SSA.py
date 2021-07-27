@@ -21,8 +21,8 @@ def SSA(objf,lb,ub,dim,N,Max_iteration,Positions, best_all, best_position,t):
     
     SalpFitness=numpy.full(N,float("inf"))
     
-    FoodPosition=best_position
-    FoodFitness=best_all
+    FoodPosition=numpy.zeros(dim)
+    FoodFitness=float("inf")
     #Moth_fitness=numpy.fell(float("inf"))
     
     print("SSA is optimizing  \""+objf.__name__+"\"")    
