@@ -39,10 +39,10 @@ def PSO(objf,lb,ub,dim,PopSize,iters,pos,best_all,best_position,t):
     pBestScore.fill(float("inf"))
     
     pBest=numpy.zeros((PopSize,dim))
-    gBest=best_position
+    gBest=numpy.zeros(dim)
     
     
-    gBestScore=best_all
+    gBestScore=float("inf")
     
         
     ############################################

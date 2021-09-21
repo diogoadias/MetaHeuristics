@@ -34,7 +34,7 @@ def BAT(objf,lb,ub,dim,N,Max_iteration,Positions, best_all, best_position,t):
     Q=numpy.zeros(n)  # Frequency
     v=numpy.zeros((n,d))  # Velocities
     convergence_curve=[];
-    fmin = best_all
+    fmin = float("inf")
     
     # Initialize the population/solutions
     Sol = Positions   
@@ -58,8 +58,8 @@ def BAT(objf,lb,ub,dim,N,Max_iteration,Positions, best_all, best_position,t):
     
     
     # Find the initial best solution
-    #I=numpy.argmin(Fitness)
-    best=best_position
+    I=numpy.argmin(Fitness)
+    best=Sol[I,:]
            
     # Main loop
        

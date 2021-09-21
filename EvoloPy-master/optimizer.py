@@ -11,13 +11,13 @@ import optimizers.PSO as pso
 import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.WOA3 as woa3
 import optimizersDiogo.IWOA as iwoa
-import optimizersDiogo.IWOA2 as iwoa2
+import optimizersDiogo.IWOA2_original as iwoa2
 import optimizersDiogo.IWOA3 as iwoa3
 import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.CWOA as cwoa
 import optimizersDiogo.ACO as aco
 import optimizersDiogo.NCA as nca
-import optimizersDiogo.MPA as mpa
+import optimizersDiogo.MPA_original as mpa
 import optimizers.BAT as bat
 import optimizers.FFA as ffa
 import optimizers.MFO as mfo
@@ -53,7 +53,7 @@ def selector(algo,func_details,popSize,Iter):
         x=woa3.WOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)    
     elif(algo=="IWOA"):
         x=iwoa.IWOA(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
-    elif(algo=="IWOA2"):
+    elif(algo=="IWOA2_original"):
         x=iwoa2.IWOA2(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
     elif(algo=="IWOA3"):
         x=iwoa3.IWOA3(getattr(benchmarks, function_name),lb,ub,dim,popSize,Iter)
@@ -117,6 +117,7 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
     Export_details=export_flags['Export_details']
     Export_convergence = export_flags['Export_convergence']
     Export_boxplot = export_flags['Export_boxplot']
+    Export_NCA = export_flags['Export_details_NCA']
 
     Flag=False
     Flag_details=False
@@ -153,6 +154,19 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
                         a=numpy.concatenate([[x.optimizer,x.objfname,x.executionTime, x.mean, x.std],x.convergence])
                         writer.writerow(a)
                     out.close()
+                
+                # if(Export_NCA==True):
+                #     ExportToFile=results_directory + "experiment_nca_details.csv"
+                #     with open(ExportToFile, 'a',newline='\n') as out:
+                #         writer = csv.writer(out,delimiter=',')
+                #         if (Flag_details==False): # just one time to write the header of the CSV file
+                #             header= numpy.concatenate(["Optimizer","objfname","Algorithm", "Best_value", "Best_population"])
+                #             writer.writerow(header)
+                #             Flag_details=True # at least one experiment
+                #         executionTime[k] = x.executionTime
+                #         a=numpy.concatenate([x.optimizer,x.objfname,x.NCA[0], x.NCA[1], x.NCA[2]])
+                #         writer.writerow(a)
+                #     out.close()
                     
             if(Export==True):
                 ExportToFile=results_directory + "experiment.csv"
@@ -169,6 +183,7 @@ def run(optimizer, objectivefunc, NumOfRuns, params, export_flags):
                     a=numpy.concatenate([[optimizerName,objfname,avgExecutionTime],avgConvergence])
                     writer.writerow(a)
                 out.close()
+                
     
     if Export_convergence == True:
         conv_plot.run(results_directory, optimizer, objectivefunc, Iterations)

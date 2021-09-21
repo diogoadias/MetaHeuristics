@@ -20,16 +20,15 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_position
     # #lb=-100
     # #ub=100
     # #Max_iter=500
-    if not isinstance(lb, list):
-        lb = [lb] * dim
-    if not isinstance(ub, list):
-        ub = [ub] * dim
+    # if not isinstance(lb, list):
+    #     lb = [lb] * dim
+    # if not isinstance(ub, list):
+    #     ub = [ub] * dim
             
-        
+   
     # initialize position vector and score for the leader
-    Leader_pos=best_position
-    Leader_score=best_all  #change this to -inf for maximization problems 
-  
+    Leader_pos=numpy.zeros(dim)
+    Leader_score=float("inf")  #change this to -inf for maximization problems
 
     #Initialize convergence
     #convergence_curve=numpy.zeros(Max_iter)
@@ -102,5 +101,3 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_position
                       
            
     return Leader_score, Leader_pos, Positions
-
-

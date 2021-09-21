@@ -22,3 +22,4 @@ class solution:
         self.maxiers=0
         self.mean=0
         self.std=0
+        self.NCA=[]

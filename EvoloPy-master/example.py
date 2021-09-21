@@ -11,7 +11,8 @@ import numpy
 # Select optimizers
 # "SSA","PSO","GA","BAT","FFA","GWO","WOA","MVO","MFO","CS","HHO","SCA","JAYA","DE"
 #optimizer=["BAT", "FFA", "GWO", "MFO", "MPA", "PSO", "SSA", "WOA"]
-optimizer=["NCA"]
+#optimizer=["NCA","MPA", "IWOA", "IWOA2_original", "IWOA3", "WOAAC", "WOANL", "CWOA"]
+optimizer=["NCA", "MPA"]
 
 # Select benchmark function"
 # "F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23"
@@ -26,6 +27,6 @@ params = {'PopulationSize' : 30, 'Iterations' : 500}
 
 #Choose whether to Export the results in different formats
 export_flags = {'Export_avg':True, 'Export_details':True, 
-'Export_convergence':True, 'Export_boxplot':False}
+'Export_convergence':True, 'Export_boxplot':False, 'Export_details_NCA':True}
 
 run(optimizer, objectivefunc, NumOfRuns, params, export_flags)
