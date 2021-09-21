@@ -20,6 +20,7 @@ import optimizersDiogo.WOA as woa
 import optimizersDiogo.FFA as ffa
 import optimizersDiogo.SSA as ssa
 import optimizersDiogo.BAT as bat
+import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.functions as f
 
 def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
@@ -61,7 +62,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     while t<=Max_iter-1:
         
         # algorithm = ["PSO", "GWO", "WOA", "IWOA", "CWOA", "WOANL", "WOAAC"]
-        algorithm = ["PSO", "GWO", "WOA", "FFA", "MFO", "MPA", "SSA", "BAT"]          
+        algorithm = ["PSO", "GWO", "WOA", "WOAAC"]          
         
         while len(algorithm) > 0:
             prob = numpy.random.random_sample(len(algorithm))
@@ -139,6 +140,14 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                 algorithm.remove("BAT")
                 prob = numpy.delete(prob, index)
                 convergence_curve[t]=best_all
+            
+            #WOAAC
+            if(choice == "WOAAC" and t < Max_iter):
+                best_so_far, best_position_so_far, Positions = woaac.WOAAC(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                index = algorithm.index("WOAAC")
+                algorithm.remove("WOAAC")
+                prob = numpy.delete(prob, index)
+                convergence_curve[t]=best_all
                                                                                  
 
             # #IWOA
@@ -176,18 +185,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             #     prob = numpy.delete(prob, index)
             #     convergence_curve[t]=best_all 
             #     t=t+1
-
-            # #WOAAC
-            # if(choice == "WOAAC" and t < Max_iter):                
-            #     if Leader_score > best_all:
-            #         Leader_score = best_all
-            #         Leader_pos = best_position   
-            #     best_all, best_position, Positions = f.woaac(objf, t, Max_iter, SearchAgents_no, dim, Positions,lb, ub, Leader_pos, Leader_score)  
-            #     index = algorithm.index("WOAAC")
-            #     algorithm.remove("WOAAC")                
-            #     prob = numpy.delete(prob, index)
-            #     convergence_curve[t]=best_all 
-            #     t=t+1
+           
 
             if(best_so_far < best_all):
                 best_all = best_so_far
