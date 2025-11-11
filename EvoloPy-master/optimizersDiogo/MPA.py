@@ -68,6 +68,14 @@ def MPA(objf,lb,ub,dim,SearchAgents_no,Max_iter, Prey, best_all, best_position,t
             
     Elite = mb.repmat(Top_predator_pos, SearchAgents_no, 1)
     CF = (1-t/Max_iter)**(2*t/Max_iter)
+    
+    ######### MPA-S ###############################
+    
+    #Sugeno
+    #S=1
+    #CF = (1-t/Max_iter) / (1+S*(t/Max_iter)) 
+
+    ###############################################
 
     RL = 0.05 * f.levy(SearchAgents_no, dim, 1.5)
     RB = numpy.random.randn(SearchAgents_no, dim)

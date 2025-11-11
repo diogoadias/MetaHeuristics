@@ -13,17 +13,17 @@ import time
 
 
 
-def IWOA2(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_position,t):
+def IWOA2(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
     #dim=30
     #SearchAgents_no=50
     #lb=-100
     #ub=100
     #Max_iter=500
-    # if not isinstance(lb, list):
-    #     lb = [lb] * dim
-    # if not isinstance(ub, list):
-    #     ub = [ub] * dim
+    if not isinstance(lb, list):
+        lb = [lb] * dim
+    if not isinstance(ub, list):
+        ub = [ub] * dim
             
         
     # initialize position vector and score for the leader
@@ -32,89 +32,107 @@ def IWOA2(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_positi
         
         
     #Initialize the positions of search agents
-    # Positions = numpy.zeros((SearchAgents_no, dim))
-    # for i in range(dim):
-    #     Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
+    Positions = numpy.zeros((SearchAgents_no, dim))
+    for i in range(dim):
+        Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
     
 
     #Initialize convergence
-    #convergence_curve=numpy.zeros(Max_iter)
+    convergence_curve=numpy.zeros(Max_iter)
         
         
     ############################
-    #s=solution()
+    s=solution()
 
     print("IWOA2 is optimizing  \""+objf.__name__+"\"")    
 
-    #timerStart=time.time() 
-    #s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
+    timerStart=time.time() 
+    s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     ############################
         
-    #t=0  # Loop counter
+    t=0  # Loop counter
         
     # Main loop
-    #while t<Max_iter:
-    for i in range(0,SearchAgents_no):
+    while t<Max_iter:
+        for i in range(0,SearchAgents_no):
                 
-        # Return back the search agents that go beyond the boundaries of the search space
+            # Return back the search agents that go beyond the boundaries of the search space
                
-        #Positions[i,:]=checkBounds(Positions[i,:],lb,ub)
-        for j in range(dim):        
-            Positions[i,j]=numpy.clip(Positions[i,j], lb[j], ub[j])
+            #Positions[i,:]=checkBounds(Positions[i,:],lb,ub)
+            for j in range(dim):        
+                Positions[i,j]=numpy.clip(Positions[i,j], lb[j], ub[j])
                 
-        # Calculate objective function for each search agent
+            # Calculate objective function for each search agent
             fitness=objf(Positions[i,:])
                
-        # Update the leader
-        if fitness<Leader_score: # Change this to > for maximization problem
-            Leader_score=fitness; # Update alpha
-            Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
+            # Update the leader
+            if fitness<Leader_score: # Change this to > for maximization problem
+                Leader_score=fitness; # Update alpha
+                Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
        
-    # Inertia weight
-    w_final=1
-    w_initial=0.0
-    S = 1
+        # Inertia weight
+        w_final=1
+        w_initial=0.0
+        S = 1
 
-    #is introduced by Lei et al. [14]who propose a Sugeno function as inertia weight(SFIW) 
-    # method in which the inertia weight is neither set to a constant value nor set as linearly decreasing time-varying function
-    w = (1-t/Max_iter) / (1+S*(t/Max_iter)) 
+        #is introduced by Lei et al. [14]who propose a Sugeno function as inertia weight(SFIW) 
+        # method in which the inertia weight is neither set to a constant value nor set as linearly decreasing time-varying function
+        w = (1-t/Max_iter) / (1+S*(t/Max_iter)) 
         
-    a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
+        a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
                    
-    # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
-    a2=-1+t*((-1)/Max_iter);
+        # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
+        a2=-1+t*((-1)/Max_iter);
                     
-    # Update the Position of search agents 
-    for i in range(0,SearchAgents_no):
-        r1=random.random() # r1 is a random number in [0,1]
-        r2=random.random() # r2 is a random number in [0,1]
+        # Update the Position of search agents 
+        for i in range(0,SearchAgents_no):
+            r1=random.random() # r1 is a random number in [0,1]
+            r2=random.random() # r2 is a random number in [0,1]
                 
-        A=2*a*r1-a  # Eq. (2.3) in the paper
-        C=2*r2      # Eq. (2.4) in the paper
+            A=2*a*r1-a  # Eq. (2.3) in the paper
+            C=2*r2      # Eq. (2.4) in the paper
                     
-        b=1;               #  parameters in Eq. (2.5)
-        l=(a2-1)*random.random()+1   #  parameters in Eq. (2.5)
+            b=1;               #  parameters in Eq. (2.5)
+            l=(a2-1)*random.random()+1   #  parameters in Eq. (2.5)
                 
-        p = random.random()        # p in Eq. (2.6)
+            p = random.random()        # p in Eq. (2.6)
                 
-        for j in range(0,dim):
+            for j in range(0,dim):
                     
-            if p<0.5:
-                if abs(A)>=1:
-                    rand_leader_index = math.floor(SearchAgents_no*random.random());
-                    X_rand = Positions[rand_leader_index, :]
-                    D_X_rand=abs(w*C*X_rand[j]-Positions[i,j]) 
-                    Positions[i,j]=w*X_rand[j]-A*D_X_rand       
+                if p<0.5:
+                    if abs(A)>=1:
+                        rand_leader_index = math.floor(SearchAgents_no*random.random());
+                        X_rand = Positions[rand_leader_index, :]
+                        D_X_rand=abs(w*C*X_rand[j]-Positions[i,j]) 
+                        Positions[i,j]=w*X_rand[j]-A*D_X_rand       
                             
-                elif abs(A)<1:
-                    D_Leader=abs(C*w*Leader_pos[j]-Positions[i,j]) 
-                    Positions[i,j]=w*Leader_pos[j]-A*D_Leader    
+                    elif abs(A)<1:
+                        D_Leader=abs(C*w*Leader_pos[j]-Positions[i,j]) 
+                        Positions[i,j]=w*Leader_pos[j]-A*D_Leader    
                         
                         
-            elif p>=0.5:                    
-                distance2Leader=abs(w*Leader_pos[j]-Positions[i,j])
-                # Eq. (2.5)
-                Positions[i,j]=distance2Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
-   
+                elif p>=0.5:                    
+                    distance2Leader=abs(w*Leader_pos[j]-Positions[i,j])
+                    # Eq. (2.5)
+                    Positions[i,j]=distance2Leader*math.exp(b*l)*math.cos(l*2*math.pi)+Leader_pos[j]*w
+                      
+            
+        convergence_curve[t]=Leader_score
+        if (t%1==0):
+            print(['At iteration '+ str(t)+ ' the best fitness is '+ str(Leader_score)]);
+        t=t+1
+        
+    timerEnd=time.time()  
+    s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
+    s.executionTime=timerEnd-timerStart
+    s.convergence=convergence_curve
+    s.optimizer="IWOA2"   
+    s.objfname=objf.__name__
+    s.best = Leader_score
+    s.bestIndividual = Leader_pos
+    s.std = numpy.std(convergence_curve)
+    s.mean = numpy.average(convergence_curve)
        
-    return Leader_score, Leader_pos, Positions
+    return s
+
+

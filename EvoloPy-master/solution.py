@@ -22,4 +22,8 @@ class solution:
         self.maxiers=0
         self.mean=0
         self.std=0
-        self.NCA=[]
+        self.MSSWOA=[]
+        self.h=float("inf")
+        self.l=float("inf")
+        self.t=float("inf")
+        self.b=float("inf")

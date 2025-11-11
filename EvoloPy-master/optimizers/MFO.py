@@ -95,8 +95,8 @@ def MFO(objf,lb,ub,dim,N,Max_iteration):
         else:
     #        
     #        # Sort the moths
-            double_population=numpy.concatenate((previous_population,best_flames),axis=0)
-            double_fitness=numpy.concatenate((previous_fitness, best_flame_fitness),axis=0);
+            double_population=numpy.comsswoatenate((previous_population,best_flames),axis=0)
+            double_fitness=numpy.comsswoatenate((previous_fitness, best_flame_fitness),axis=0);
     #        
             double_fitness_sorted =numpy.sort(double_fitness);
             I2 =numpy.argsort(double_fitness);

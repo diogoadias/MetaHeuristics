@@ -4,7 +4,7 @@ Created on Mon Dec 21 22:00: 2020
 
 @author: diogo
 
-NCA with random choice and random probabilities
+MSSWOA with random choice and random probabilities
 """
 
 import random
@@ -23,12 +23,13 @@ import optimizersDiogo.SSA as ssa
 import optimizersDiogo.BAT as bat
 import optimizersDiogo.WOAAC as woaac
 import optimizersDiogo.IWOA2 as iwoa2
+import optimizersDiogo.WOANL as woanl
 import optimizersDiogo.CWOA as cwoa
 
 import optimizersDiogo.functions as f
 
 
-def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def MSSWOAv2(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
    # create upper and lower bundaries
     if not isinstance(lb, list):
@@ -45,6 +46,9 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     for i in range(dim):
         Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
   
+    # For Levy implementation
+    stepsize = numpy.zeros((SearchAgents_no, dim))
+
 
     #Initialize convergence
     convergence_curve=numpy.zeros(Max_iter)
@@ -55,7 +59,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     ############################
     s=solution()
 
-    print("NCA is optimizing  \""+objf.__name__+"\"")    
+    print("MSSWOA is optimizing  \""+objf.__name__+"\"")    
 
     timerStart=time.time() 
     s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -67,21 +71,21 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     while t<Max_iter:
         
         #algorithm = ["MPA","GWO", "WOA", "IWOA2", "CWOA", "WOAAC"]
-        #algorithm = ["MPA", "CWOA", "WOAAC", "IWOA2"] # NCA-MPA
-        #algorithm = ["WOA", "PSO", "GWO", "WOAAC"] # NCA A-C
-        #algorithm = ["WOA", "CWOA", "IWOA2", "WOAAC"]  #WOA-NCA
+        #algorithm = ["MPA", "CWOA", "WOAAC", "IWOA2"] # MSSWOA-MPA
+        #algorithm = ["WOA", "PSO", "GWO", "WOAAC"] # MSSWOA A-C
+        #algorithm = ["WOA", "CWOA", "IWOA2", "WOAAC"]  #WOA-MSSWOA
         #algorithm = ["CWOA", "IWOA2", "WOAAC", "WOANL"]  #WOA-M
-        algorithm = ["FFA"]
+        #algorithm = ["FFA"]
+        algorithm = ["IWOA2", "WOAAC", "WOANL"]      
         
-
         choice = None
 
         while len(algorithm) > 0:
             prob = numpy.random.random_sample(len(algorithm))
             prob /= prob.sum() # normalize distribution           
 
-            if choice is None:
-                choice = numpy.random.choice(algorithm,p=prob)
+            #if choice is None:
+            choice = numpy.random.choice(algorithm,p=prob)
             
             #PSO
             if(choice == "PSO" and t < Max_iter):
@@ -149,16 +153,16 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
 
             #WOANL
             if(choice == "WOANL" and t < Max_iter):
-                best_so_far, best_position_so_far, Positions = cwoa.CWOA(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
+                best_so_far, best_position_so_far, Positions = woanl.WOANL(objf, lb, ub, dim, SearchAgents_no, Max_iter, Positions, best_all, best_position,t)
                 index = algorithm.index("WOANL")
            
             
-            #DETAILED NCA
+            #DETAILED MSSWOA
             # iteration_values = []
             # iteration_values.append(choice)
             # iteration_values.append(best_so_far)
             # iteration_values.append(best_position_so_far)
-            # s.NCA.append(iteration_values)
+            # s.MSSWOA.append(iteration_values)
 
             if (t == Max_iter):
                 break
@@ -166,19 +170,22 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             if(best_so_far < best_all):
                 best_all = best_so_far
                 best_position = best_position_so_far
+                #Positions, stepsize = f.brownian(Positions, best_position, stepsize, dim)
+                #Positions, stepsize = f.levy_population(Positions, best_position, stepsize, dim, t, Max_iter)                
             else: 
                 prob = numpy.delete(prob, index)
                 algorithm.remove(choice) 
-                choice = None            
-            
-
+                #choice = None
+                
+                r = random.random()
+                if r <= 0.5:
+                    Positions, stepsize = f.levy_population(Positions, best_position, stepsize, dim, t, Max_iter)
+                
+                    
+           
             if (t%1==0):
                 print(['At iteration '+ str(t)+ ' the best fitness is '+ str(best_all)]); 
             
-            # check = numpy.array_equal(Positions, new_Positions)    
-            # if not check:
-            #     Positions = new_Positions
-
             convergence_curve[t]=best_all            
             t=t+1                        
         
@@ -186,7 +193,7 @@ def NCA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
     s.convergence=convergence_curve
-    s.optimizer="NCA"   
+    s.optimizer="MSSWOAv2"   
     s.objfname=objf.__name__
     s.best = best_all
     s.bestIndividual = best_position

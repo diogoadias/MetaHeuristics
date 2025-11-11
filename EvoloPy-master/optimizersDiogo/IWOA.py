@@ -13,17 +13,17 @@ import time
 
 
 
-def IWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def IWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_position,t):
     
     #dim=30
     #SearchAgents_no=50
     #lb=-100
     #ub=100
     #Max_iter=500
-    if not isinstance(lb, list):
-        lb = [lb] * dim
-    if not isinstance(ub, list):
-        ub = [ub] * dim
+    # if not isinstance(lb, list):
+    #     lb = [lb] * dim
+    # if not isinstance(ub, list):
+    #     ub = [ub] * dim
             
         
     # initialize position vector and score for the leader
@@ -32,9 +32,9 @@ def IWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
         
         
     #Initialize the positions of search agents
-    Positions = numpy.zeros((SearchAgents_no, dim))
-    for i in range(dim):
-        Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
+    # Positions = numpy.zeros((SearchAgents_no, dim))
+    # for i in range(dim):
+    #     Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
     
 
     #Initialize convergence

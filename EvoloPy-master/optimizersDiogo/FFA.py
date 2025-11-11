@@ -58,8 +58,8 @@ def FFA(objf,lb,ub,dim,n,MaxGeneration,Positions, best_all, best_position,t):
     
     #ns(i,:)=Lb+(Ub-Lb).*rand(1,d);
     ns = Positions
-    Lightn=numpy.ones(n)
-    Lightn.fill(float("inf")) 
+    Lightn=best_position
+    #Lightn.fill(float("inf")) 
     
     #[ns,Lightn]=init_ffa(n,d,Lb,Ub,u0)
      

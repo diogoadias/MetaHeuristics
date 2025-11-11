@@ -41,7 +41,7 @@ class House:
 
        return mask
 
-    # GERA PROBABILIDADE DE CADA TRANSFORMAÇÃO DA BANCA
+    # GERA PROBABILIDADE DE CADA TRANSFORMAÇÃO DA BAMSSWOA
     def createHouseProbs(self, players_list: list, mask: int):
         sums = []
         for m in range(0, 2 ** mask):

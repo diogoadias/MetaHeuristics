@@ -40,7 +40,7 @@ for i in range(0, 100): #NÚMERO DE RODADAS DO JOGO
         #print("Player", p.id, "Ratings", p.ratings)
 
     # Parametros (lista de jogadores / tamanho da mascara))
-    houseProbs = house.createHouseProbs(players, 3) #PROBABILIDADE DE CADA TRANSFORMAÇÃO DA BANCA
+    houseProbs = house.createHouseProbs(players, 3) #PROBABILIDADE DE CADA TRANSFORMAÇÃO DA BAMSSWOA
     #print("House Probs:", houseProbs)
 
     Player.bet(players, houseProbs) # APOSTA DOS PLAYERS

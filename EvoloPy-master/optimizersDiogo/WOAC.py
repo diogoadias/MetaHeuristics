@@ -13,7 +13,7 @@ import time
 
 
 
-def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
+def WOAC(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     
     #dim=30
     #SearchAgents_no=50
@@ -32,10 +32,10 @@ def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
         
         
     #Initialize the positions of search agents
-    # Positions = numpy.zeros((SearchAgents_no, dim))
-    # for i in range(dim):
-    #     Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
-   
+    Positions = numpy.zeros((SearchAgents_no, dim))
+    for i in range(dim):
+        Positions[:, i] = numpy.random.uniform(0,1,SearchAgents_no) *(ub[i]-lb[i])+lb[i]
+    
 
     #Initialize convergence
     convergence_curve=numpy.zeros(Max_iter)
@@ -44,13 +44,14 @@ def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     ############################
     s=solution()
 
-    print("WOANL is optimizing  \""+objf.__name__+"\"")    
+    print("CWOA is optimizing  \""+objf.__name__+"\"")    
 
     timerStart=time.time() 
     s.startTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     ############################
         
     t=0  # Loop counter
+    
         
     # Main loop
     while t<Max_iter:
@@ -70,15 +71,12 @@ def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
                 Leader_score=fitness; # Update alpha
                 Leader_pos=Positions[i,:].copy() # copy current whale position into the leader position
        
+       
+        a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
             
-        # a=2-t*((2)/Max_iter); # a decreases linearly fron 2 to 0 in Eq. (2.3)
-        
-        
-        a = 2+2*math.cos(math.pi/2*(1+t/Max_iter)) # a decreases non-linearly
-                   
         # a2 linearly decreases from -1 to -2 to calculate t in Eq. (3.12)
-        a2=-1+t*((-1)/Max_iter);
-                    
+        a2=-1+t*((-1)/Max_iter);        
+            
         # Update the Position of search agents 
         for i in range(0,SearchAgents_no):
             r1=random.random() # r1 is a random number in [0,1]
@@ -91,6 +89,41 @@ def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             l=(a2-1)*random.random()+1   #  parameters in Eq. (2.5)
                 
             p = random.random()        # p in Eq. (2.6)
+
+            # Chaotic maps
+            cm = numpy.random.choice(numpy.arange(8))
+            #cm = 5
+
+            if cm == 1:
+                # Logistic
+                Positions[i,j] = a*Positions[i,j]*(1-Positions[i,j])
+            elif cm == 2:
+                # Cubic
+                Positions[i,j] = a*Positions[i,j]*(1-(Positions[i,j]**2))
+            elif cm == 3:
+                # Sine
+                Positions[i,j] = (a/4)*math.sin(math.pi*Positions[i,j])
+            elif cm == 4:
+                # Sinusoidal
+                Positions[i,j] = a*(Positions[i,j]**2)*math.sin(math.pi*Positions[i,j])
+            elif cm == 5:
+                # Singer
+                u = 1.07
+                Positions[i,j] = u*(7.86*Positions[i,j]-23.31*(Positions[i,j]**2)+28.75*(Positions[i,j]**3)-13.302875*(Positions[i,j]**4))
+            elif cm == 6:
+                # Circle
+                b = 1
+                k = dim -1
+                Positions[i,j] = math.fmod(Positions[i,j]+b-(a/2*math.pi)*math.sin(2*math.pi*Positions[i,k]), 1)
+            elif cm == 7:
+                # Iterative
+                Positions[i,j] = math.sin((a*math.pi)/Positions[i,j])
+            elif cm == 8:
+                # Tent Chaotic Map
+                if(Positions[i,j] < 0.7):
+                    Positions[i,j] = Positions[i,j] / 0.7
+                else:
+                    Positions[i,j] = (10/3)*(1-Positions[i,j])   
                 
             for j in range(0,dim):
                     
@@ -122,7 +155,7 @@ def WOANL(objf,lb,ub,dim,SearchAgents_no,Max_iter):
     s.endTime=time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime=timerEnd-timerStart
     s.convergence=convergence_curve
-    s.optimizer="WOANL"   
+    s.optimizer="CWOA"   
     s.objfname=objf.__name__
     s.best = Leader_score
     s.bestIndividual = Leader_pos

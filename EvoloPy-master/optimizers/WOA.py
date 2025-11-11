@@ -59,7 +59,7 @@ def WOA(objf,lb,ub,dim,SearchAgents_no,Max_iter):
             # Return back the search agents that go beyond the boundaries of the search space
                
             #Positions[i,:]=checkBounds(Positions[i,:],lb,ub)
-            for j in range(dim):        
+            for j in range(dim):                     
                 Positions[i,j]=numpy.clip(Positions[i,j], lb[j], ub[j])
                 
             # Calculate objective function for each search agent

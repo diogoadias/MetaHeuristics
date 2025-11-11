@@ -36,14 +36,14 @@ def MFO(objf,lb,ub,dim,N,Max_iteration,Moth_pos,best_all,best_position, t):
     Moth_fitness=numpy.full(N,float("inf"))
     #Moth_fitness=numpy.fell(float("inf"))
     
-    Convergence_curve=numpy.zeros(Max_iteration)
+    #Convergence_curve=numpy.zeros(Max_iteration)
     
     
     sorted_population=numpy.copy(Moth_pos)
     fitness_sorted=numpy.zeros(N)
     #####################
-    best_flames=numpy.copy(Moth_pos)
-    best_flame_fitness=numpy.zeros(N)
+    best_flames=best_position
+    best_flame_fitness=best_all
     ####################
     double_population=numpy.zeros((2*N,dim))
     double_fitness=numpy.zeros(2*N)
@@ -90,8 +90,8 @@ def MFO(objf,lb,ub,dim,N,Max_iteration,Moth_pos,best_all,best_position, t):
     else:
 #        
 #        # Sort the moths
-        double_population=numpy.concatenate((previous_population,best_flames),axis=0)
-        double_fitness=numpy.concatenate((previous_fitness, best_flame_fitness),axis=0);
+        double_population=numpy.comsswoatenate((previous_population,best_flames),axis=0)
+        double_fitness=numpy.comsswoatenate((previous_fitness, best_flame_fitness),axis=0);
 #        
         double_fitness_sorted =numpy.sort(double_fitness);
         I2 =numpy.argsort(double_fitness);

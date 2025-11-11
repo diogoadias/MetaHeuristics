@@ -9,7 +9,7 @@ import numpy
 import math
 from solution import solution
 import time
-import optimizersDiogo.functions as f
+import functions as f
 
 
 
@@ -20,7 +20,8 @@ def CWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_positio
     # initialize position vector and score for the leader
     Leader_pos=best_position
     Leader_score=best_all  #change this to -inf for maximization problems
-
+        
+        
     print("CWOA is optimizing  \""+objf.__name__+"\"")    
 
     
@@ -29,7 +30,8 @@ def CWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_positio
         # Return back the search agents that go beyond the boundaries of the search space
                
         #Positions[i,:]=checkBounds(Positions[i,:],lb,ub)
-        for j in range(dim):                   
+        for j in range(dim):
+            Positions[i,j]= f.chaotic(t, j, Positions[i,j])        
             Positions[i,j]=numpy.clip(Positions[i,j], lb[j], ub[j])
                 
         # Calculate objective function for each search agent
@@ -57,11 +59,10 @@ def CWOA(objf,lb,ub,dim,SearchAgents_no,Max_iter,Positions,best_all,best_positio
         b=1;               #  parameters in Eq. (2.5)
         l=(a2-1)*random.random()+1   #  parameters in Eq. (2.5)
                 
-        p = random.random()        # p in Eq. (2.6)         
-              
+        p = random.random()        # p in Eq. (2.6)
+
         for j in range(0,dim):
-            Positions[i,j]= f.chaotic(a, Positions[i,j])           
-            
+                    
             if p<0.5:
                 if abs(A)>=1:
                     rand_leader_index = math.floor(SearchAgents_no*random.random());

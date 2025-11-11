@@ -212,9 +212,9 @@ def crossover(individualLength, parent1, parent2):
     # The point at which crossover takes place between two parents. 
     crossover_point = random.randint(0, individualLength - 1)
     # The new offspring will have its first half of its genes taken from the first parent and second half of its genes taken from the second parent.
-    offspring1 = numpy.concatenate([parent1[0:crossover_point],parent2[crossover_point:]])
+    offspring1 = numpy.comsswoatenate([parent1[0:crossover_point],parent2[crossover_point:]])
     # The new offspring will have its first half of its genes taken from the second parent and second half of its genes taken from the first parent.
-    offspring2 = numpy.concatenate([parent2[0:crossover_point],parent1[crossover_point:]])
+    offspring2 = numpy.comsswoatenate([parent2[0:crossover_point],parent1[crossover_point:]])
     
     return offspring1, offspring2
 
